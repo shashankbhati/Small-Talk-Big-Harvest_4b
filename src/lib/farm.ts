@@ -17,7 +17,8 @@ export function isValidPhone(digits: string, code: string = "+91") {
   return /^\d{7,14}$/.test(digits);
 }
 export const maxDigits = (code: string) => (code === "+91" ? 10 : 14);
-export const fullPhone = (code: string, digits: string) => `${code}${digits}`;
+/** Drops the national leading 0 (0151… -> +49151…) so the number matches what the phone network sends. */
+export const fullPhone = (code: string, digits: string) => `${code}${digits.replace(/^0+/, "")}`;
 export function splitPhone(full: string): { code: CountryCode; digits: string } {
   const code = COUNTRY_CODES.find((c) => full.startsWith(c));
   return code ? { code, digits: full.slice(code.length) } : { code: "+91", digits: full.replace(/\D/g, "") };

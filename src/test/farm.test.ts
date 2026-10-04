@@ -31,4 +31,8 @@ describe("country codes", () => {
   it("sends the full international number", () => {
     expect(fullPhone("+49", "15112345678")).toBe("+4915112345678");
   });
+  it("drops the national leading zero", () => {
+    expect(fullPhone("+49", "015112345678")).toBe("+4915112345678");
+    expect(fullPhone("+91", "9876543210")).toBe("+919876543210");
+  });
 });
