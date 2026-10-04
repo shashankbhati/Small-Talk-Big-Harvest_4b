@@ -1,7 +1,7 @@
 # Coffee Helpline: registration app
 
-The smartphone side of a voice helpline for smallholder farmers, built for the Hack-Nation x World Bank
-"Small AI for Development" hackathon (Challenge 04, Agriculture).
+The smartphone side of a voice helpline for smallholder farmers, built by team **Small Talk, Big Harvest**
+for the Hack-Nation x World Bank "Small AI for Development" hackathon (Challenge 04, Agriculture).
 
 A family member registers the farm once in this app. After that the farmer calls the helpline from a
 basic phone, describes the crop problem in Hindi, and hears a pre-written answer. The same answer then
@@ -31,7 +31,20 @@ The app has no database of its own. It talks to the helpline backend
 | `DELETE /api/farmers/me` | delete everything |
 
 Settings are in [`src/lib/config.ts`](src/lib/config.ts): the backend address, the helpline number and
-the team contact shown in the privacy policy.
+the team contact shown in the privacy policy. The backend address can be overridden at build time with
+`VITE_API_BASE_URL` (in `.env.local`, or in the Vercel project settings).
+
+## Deploying to Vercel
+
+The build targets Cloudflare by default (Lovable). For Vercel, set the environment variable
+`NITRO_PRESET=vercel` in the project, or build locally and upload the result:
+
+```sh
+NITRO_PRESET=vercel npm run build
+vercel deploy --prebuilt --prod
+```
+
+On a phone, open the deployed address and choose "Add to Home screen" to install it.
 
 ## Limits
 
