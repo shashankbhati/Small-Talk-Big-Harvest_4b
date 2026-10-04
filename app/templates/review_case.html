@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Review Case{% endblock %}
+{% block content %}
+<div class="card">
+  <p><a href="/review">← back to queue</a></p>
+  <h2 style="margin-top:0">Case <span class="muted" style="font-size:14px">{{ c.id }}</span></h2>
+  <p class="muted">{{ c.created_at.strftime('%Y-%m-%d %H:%M') }} UTC · {{ c.channel }} · language <strong>{{ c.language }}</strong>
+    {% if c.detected_language and c.detected_language != c.language %}(Whisper detected {{ c.detected_language }}){% endif %}
+    · status {{ c.status }}</p>
+  <p>System result: <span class="pill {{ c.result }}">{{ c.result }}</span>
+    {% if c.not_sure_reason %}<span class="muted">({{ c.not_sure_reason }})</span>{% endif %}
+    · Top 2: {% for cond, s in (c.top2 or []) %}{{ cond }} ({{ s }}){% if not loop.last %}, {% endif %}{% else %}—{% endfor %}
+    {% if c.asr_confidence is not none %}· ASR conf {{ c.asr_confidence }}{% endif %}
+    · models: STT {{ c.stt_provider or '—' }}, LLM {{ c.llm_provider or '—' }}</p>
+  {% if c.audio_path %}
+    <audio controls src="/review/{{ c.id }}/audio"></audio>
+  {% else %}
+    <p class="muted">No audio stored ({{ c.audio_consent }}).</p>
+  {% endif %}
+</div>
+
+{% include "_weather.html" %}
+
+<form method="post" action="/review/{{ c.id }}" class="card">
+  <label>Transcript</label>
+  <p {% if c.language == 'ar' %}dir="rtl"{% endif %}>{{ c.transcript or '—' }}</p>
+  <label for="tc">Corrected transcript (optional)</label>
+  <textarea id="tc" name="transcript_corrected" {% if c.language == 'ar' %}dir="rtl"{% endif %}>{{ c.transcript_corrected or c.transcript or '' }}</textarea>
+
+  <label>Symptom flags (correct if wrong)</label>
+  <table>
+    {% for k, desc in symptoms.items() %}
+    {% set v = (c.parameters or {}).get(k, 0) %}
+    <tr><td><code>{{ k }}</code><br><span class="muted">{{ desc }}</span></td>
+      <td><select name="p_{{ k }}">
+        <option value="1" {% if v == 1 %}selected{% endif %}>yes (1)</option>
+        <option value="0" {% if v == 0 %}selected{% endif %}>unknown (0)</option>
+        <option value="-1" {% if v == -1 %}selected{% endif %}>no (-1)</option>
+      </select></td></tr>
+    {% endfor %}
+  </table>
+
+  <div class="row">
+    <div>
+      <label for="label">Expert label</label>
+      <select id="label" name="expert_label" required>
+        <option value="">— choose —</option>
+        {% for cond in conditions %}<option value="{{ cond }}" {% if c.expert_label == cond %}selected{% endif %}>{{ cond }}</option>{% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="by">Reviewed by</label>
+      <input type="text" id="by" name="reviewed_by" value="{{ c.reviewed_by or '' }}">
+    </div>
+  </div>
+  <p class="muted">Labels other than “unclear” are added to the knowledge base as a verified case.</p>
+  <p><button type="submit">Save label</button></p>
+</form>
+{% endblock %}

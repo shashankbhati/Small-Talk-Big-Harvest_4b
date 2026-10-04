@@ -1,0 +1,18 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+sqlalchemy>=2.0
+pydantic>=2
+pydantic-settings
+pyyaml
+httpx
+cryptography
+twilio
+faster-whisper
+jiwer
+pytest
+# optional
+# minio
+# datasets
+# psycopg[binary]

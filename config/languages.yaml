@@ -1,0 +1,5 @@
+languages:
+#  sw: { name: Swahili, ivr_key: "1", whisper_code: sw, twilio_say_voice: null, sms_prefix: SW, script: latin }
+  ar: { name: Arabic,  ivr_key: "1", whisper_code: ar, twilio_say_voice: "Polly.Zeina", sms_prefix: AR, script: arabic }
+  hi: { name: Hindi,   ivr_key: "2", whisper_code: hi, twilio_say_voice: "Polly.Aditi", sms_prefix: HI, script: devanagari }
+default_language: sw

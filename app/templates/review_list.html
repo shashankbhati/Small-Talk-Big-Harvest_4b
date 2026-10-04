@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Review Queue{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 style="margin-top:0">Review queue</h2>
+  <p class="muted">Show:
+    {% for s in ['in_review', 'labeled', 'answered', 'error', 'all'] %}
+      {% if s == show %}<strong>{{ s }}</strong>{% else %}<a href="/review?show={{ s }}">{{ s }}</a>{% endif %}{% if not loop.last %} · {% endif %}
+    {% endfor %}
+  </p>
+  <table>
+    <tr><th>Date (UTC)</th><th>Lang</th><th>Channel</th><th>Reason</th><th>Top 2</th><th>Transcript</th></tr>
+    {% for c in cases %}
+    <tr>
+      <td><a href="/review/{{ c.id }}">{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</a></td>
+      <td>{{ c.language }}</td>
+      <td>{{ c.channel }}</td>
+      <td>{% if c.expert_label %}<span class="pill">{{ c.expert_label }}</span>{% else %}<span class="pill not_sure">{{ c.not_sure_reason or c.result or c.status }}</span>{% endif %}</td>
+      <td class="muted">{% for cond, s in (c.top2 or []) %}{{ cond }} {{ s }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+      <td {% if c.language == 'ar' %}dir="rtl"{% endif %}>{{ (c.transcript or '')[:80] }}{% if (c.transcript or '')|length > 80 %}…{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="muted">Nothing here.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

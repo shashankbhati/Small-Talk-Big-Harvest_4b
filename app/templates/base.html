@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Shamba Call{% endblock %}</title>
+<style>
+  :root { --fg:#1d2a1f; --muted:#5d6b5f; --bg:#f6f5ef; --card:#fff; --line:#dcd9cc; --accent:#2f6b3a; --warn:#a15c00; --bad:#9b2c2c; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 system-ui, sans-serif; color:var(--fg); background:var(--bg); }
+  header { background:var(--accent); color:#fff; padding:12px 16px; }
+  header a { color:#fff; text-decoration:none; margin-right:16px; font-weight:600; }
+  main { max-width:900px; margin:0 auto; padding:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px; }
+  label { display:block; font-weight:600; margin:10px 0 4px; }
+  select, input[type=text], textarea { width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; font:inherit; }
+  textarea { min-height:90px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:9px 16px; font:inherit; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); border:1px solid var(--accent); }
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .muted { color:var(--muted); }
+  .pill { display:inline-block; padding:2px 8px; border-radius:99px; font-size:13px; background:#e8efe6; }
+  .pill.not_sure { background:#fbeed9; color:var(--warn); }
+  .answer { font-size:20px; font-weight:600; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; }
+  .row > div { flex:1 1 200px; }
+  .pill.risk-high { background:#fde2e2; color:var(--bad); }
+  .pill.risk-medium { background:#fbeed9; color:var(--warn); }
+  .pill.risk-low { background:#e8efe6; }
+  [dir=rtl] { text-align:right; }
+  code { background:#eee; padding:1px 4px; border-radius:4px; }
+</style>
+</head>
+<body>
+<header><a href="/demo">Shamba Call · Demo</a><a href="/review">Review queue</a></header>
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>

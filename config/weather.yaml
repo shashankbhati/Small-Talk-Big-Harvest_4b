@@ -1,0 +1,76 @@
+# Weather reasoning: past weather at the farm makes some conditions more or less likely.
+# DRAFT thresholds from general coffee-disease epidemiology — they need review by an agronomist
+# (e.g. CABI PlantwisePlus, national coffee research institutes), like profiles.yaml.
+#
+# Weather NEVER produces an answer on its own: it only adds a small bonus/penalty (at most max_bonus)
+# to the symptom score, which mostly breaks ties between conditions the symptoms already point to.
+# The "weak match" check still uses the symptom score alone.
+#
+# Features (computed from Open-Meteo daily data, for windows of the last 14/21/30/42/60 days):
+#   rain_mm_N, rain_days_N (>= 1 mm), dry_days_N, humid_days_N (mean RH >= 85 %), hot_days_N (max >= 30 °C),
+#   warm_wet_days_N (rain and mean 18-26 °C), cool_wet_days_N (rain and mean <= 22 °C), mean_temp_N,
+#   longest_wet_spell_N, longest_dry_spell_N
+# Each rule: feature + min and/or max + reason ("{v}" = the value). Score = (favours met - against met) / favours.
+
+lookback_days: 60
+max_bonus: 0.1
+
+rules:
+  # Rust spores need liquid water on leaves and ~21-25 °C; spots show ~3-5 weeks after infection.
+  leaf_rust:
+    favours:
+      - { feature: warm_wet_days_42, min: 10, reason: "{v} warm rainy days (18-26 °C) in the last 6 weeks — rust spores need wet leaves and warmth" }
+      - { feature: rain_mm_42, min: 100, reason: "{v} mm of rain in the last 6 weeks" }
+    against:
+      - { feature: rain_days_42, max: 3, reason: "only {v} rainy days in the last 6 weeks — too dry for rust infection" }
+      - { feature: mean_temp_42, max: 15, reason: "average {v} °C in the last 6 weeks — too cold for rust" }
+
+  # Coffee berry disease spreads in long, cool rainy spells while berries are green.
+  coffee_berry_disease:
+    favours:
+      - { feature: rain_days_30, min: 12, reason: "{v} rainy days in the last 30 days" }
+      - { feature: longest_wet_spell_30, min: 5, reason: "{v} rainy days in a row — long wet spell" }
+      - { feature: cool_wet_days_30, min: 8, reason: "{v} cool rainy days (<= 22 °C) in the last 30 days" }
+    against:
+      - { feature: rain_days_30, max: 3, reason: "only {v} rainy days in the last 30 days — too dry for berry disease" }
+
+  # Berry rots and moulds follow very humid, rainy weeks.
+  berry_rot:
+    favours:
+      - { feature: humid_days_21, min: 10, reason: "{v} very humid days (>= 85 %) in the last 3 weeks" }
+      - { feature: rain_days_21, min: 8, reason: "{v} rainy days in the last 3 weeks" }
+    against:
+      - { feature: rain_days_21, max: 2, reason: "only {v} rainy days in the last 3 weeks" }
+
+  # Cercospora: humid weather, worse on plants stressed by drought / poor nutrition.
+  cercospora:
+    favours:
+      - { feature: humid_days_30, min: 10, reason: "{v} very humid days (>= 85 %) in the last 30 days" }
+      - { feature: longest_dry_spell_60, min: 14, reason: "{v} dry days in a row in the last 2 months — drought stress" }
+    against: []
+
+  # Green scale builds up in dry, hot spells; heavy rain and its fungal enemies keep it down.
+  green_scale:
+    favours:
+      - { feature: longest_dry_spell_60, min: 21, reason: "{v} dry days in a row in the last 2 months" }
+      - { feature: hot_days_60, min: 15, reason: "{v} hot days (>= 30 °C) in the last 2 months" }
+    against:
+      - { feature: rain_days_30, min: 15, reason: "{v} rainy days in the last 30 days — rain keeps scale insects down" }
+
+  # Berry borer likes warm conditions and dry periods.
+  berry_borer:
+    favours:
+      - { feature: mean_temp_60, min: 22, reason: "average {v} °C in the last 2 months — warm" }
+      - { feature: dry_days_60, min: 35, reason: "{v} dry days in the last 2 months" }
+    against:
+      - { feature: mean_temp_60, max: 18, reason: "average {v} °C in the last 2 months — cool" }
+
+  # Root rot follows waterlogged soil after heavy rain.
+  root_rot:
+    favours:
+      - { feature: rain_mm_30, min: 200, reason: "{v} mm of rain in the last 30 days — soil may be waterlogged" }
+      - { feature: longest_wet_spell_30, min: 7, reason: "{v} rainy days in a row" }
+    against:
+      - { feature: rain_mm_30, max: 20, reason: "only {v} mm of rain in the last 30 days" }
+
+  # coffee_wilt_disease and healthy: weather has little effect -> no rules, no bonus.

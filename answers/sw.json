@@ -1,0 +1,75 @@
+{
+  "_note": "Swahili. DRAFT translation of en.json (advice from knowledge/coffee_disease_knowledge_base.xlsx) — a native speaker must check before recording.",
+  "prompt_welcome": {
+    "text": "Karibu Shamba Call. Kwa Kiswahili, bonyeza 1.",
+    "audio": "welcome.mp3"
+  },
+  "prompt_invalid": {
+    "text": "Samahani, hatukuelewa chaguo lako.",
+    "audio": "invalid.mp3"
+  },
+  "prompt_consent": {
+    "text": "Simu hii inarekodiwa ili kukusaidia. Bonyeza 1 kuruhusu sauti yako ihifadhiwe kuboresha huduma. Bonyeza 2 kuitumia kwa jibu hili tu.",
+    "audio": "consent.mp3"
+  },
+  "prompt_describe": {
+    "text": "Baada ya mlio, eleza unachokiona kwenye kahawa yako. Bonyeza kitufe chochote ukimaliza.",
+    "audio": "describe.mp3"
+  },
+  "prompt_wait": {
+    "text": "Tafadhali subiri kidogo.",
+    "audio": "wait.mp3"
+  },
+  "healthy": {
+    "text": "Mmea wako wa kahawa unaonekana kuwa na afya.",
+    "audio": "healthy.mp3"
+  },
+  "leaf_rust": {
+    "text": "Mmea wako huenda una kutu ya majani ya kahawa. Uhakika: juu. Ondoa majani yaliyoathirika sana na yaliyoanguka, pogoa na punguza kivuli kingi ili hewa ipite, na lisha mmea vizuri. Muulize afisa ugani dawa ya ukungu iliyosajiliwa ya kutumia na wakati gani.",
+    "audio": "leaf_rust.mp3"
+  },
+  "coffee_berry_disease": {
+    "text": "Mmea wako huenda una ugonjwa wa buni za kahawa. Uhakika: juu. Ondoa na uharibu buni zilizoathirika sana, pogoa ili hewa ipite, na muulize afisa ugani dawa ya ukungu iliyosajiliwa ya kutumia na wakati gani.",
+    "audio": "coffee_berry_disease.mp3"
+  },
+  "coffee_wilt_disease": {
+    "text": "Mmea wako huenda una ugonjwa wa mnyauko wa kahawa. Uhakika: juu. Usihamishe mimea wala udongo kutoka karibu na mti huu, safisha vifaa vyako baada ya kukata, na mpigie afisa ugani athibitishe kabla ya kuung'oa mti.",
+    "audio": "coffee_wilt_disease.mp3"
+  },
+  "cercospora": {
+    "text": "Mmea wako huenda una ugonjwa wa madoa ya kahawia. Uhakika: juu. Lisha mmea vizuri, boresha mzunguko wa hewa, na ondoa majani yaliyoathirika sana. Muulize afisa ugani kabla ya kutumia dawa yoyote ya ukungu.",
+    "audio": "cercospora.mp3"
+  },
+  "root_rot": {
+    "text": "Mmea wako huenda una ugonjwa wa kuoza kwa mizizi. Uhakika: juu. Boresha mifereji ili maji yasituame karibu na mmea, usihamishe udongo kutoka mahali hapa, na muombe afisa ugani akague mizizi.",
+    "audio": "root_rot.mp3"
+  },
+  "berry_borer": {
+    "text": "Mmea wako huenda una mdudu toboa buni. Uhakika: juu. Chuma buni zote zilizoiva, kusanya na uharibu buni zilizoanguka na zilizobaki baada ya mavuno, na muulize afisa ugani kuhusu mitego.",
+    "audio": "berry_borer.mp3"
+  },
+  "green_scale": {
+    "text": "Mmea wako huenda una wadudu wa magamba ya kijani. Uhakika: juu. Kata sehemu zilizoathirika sana, dhibiti sisimizi wanaowalinda wadudu hao, na muulize afisa ugani kuhusu tiba inayofaa.",
+    "audio": "green_scale.mp3"
+  },
+  "berry_rot": {
+    "text": "Mmea wako huenda una ugonjwa wa kuoza kwa buni. Uhakika: juu. Ondoa na utupe buni zilizooza, usiache buni zilizoanguka kwenye udongo wenye unyevu, pogoa ili hewa ipite, na muulize afisa ugani kabla ya kutumia dawa ya ukungu.",
+    "audio": "berry_rot.mp3"
+  },
+  "not_sure": {
+    "text": "Hatuna uhakika. Afisa ugani atakupigia simu.",
+    "audio": "not_sure.mp3"
+  },
+  "goodbye": {
+    "text": "Asante kwa kupiga Shamba Call. Kwaheri.",
+    "audio": "goodbye.mp3"
+  },
+  "sms_privacy": {
+    "text": "Shamba Call huhifadhi ujumbe wako kuboresha ushauri. Namba yako inalindwa.",
+    "audio": null
+  },
+  "prompt_data_deleted": {
+    "text": "Data zako zote za Shamba Call zimefutwa. Kwaheri.",
+    "audio": "data_deleted.mp3"
+  }
+}

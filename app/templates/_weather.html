@@ -1,0 +1,28 @@
+{# expects `c` (a Case) #}
+{% if c.place or c.lat is not none %}
+<div class="card">
+  <h3 style="margin-top:0">Weather at the farm</h3>
+  <p class="muted" style="margin-top:0">{{ c.place or '' }}{% if c.lat is not none %} · {{ c.lat }}, {{ c.lon }}{% endif %}
+  {% if c.weather %} · {{ c.weather.period[0] }} → {{ c.weather.period[1] }} · {{ c.weather.source }}{% endif %}</p>
+  {% if c.weather %}
+    {% set w = c.weather.summary %}
+    <p>Last 30 days: <strong>{{ w.rain_mm_30 }} mm</strong> rain on {{ w.rain_days_30 }} days ·
+      {{ w.humid_days_30 }} very humid days · average {{ w.mean_temp_30 }} °C ·
+      longest wet spell {{ w.longest_wet_spell_30 }} days · longest dry spell (60 days) {{ w.longest_dry_spell_60 }} days</p>
+    <table>
+      <tr><th>Condition</th><th>Weather risk</th><th>Score effect</th><th>Why</th></tr>
+      {% for cond, rk in c.weather.risks.items()|sort(attribute='1.score', reverse=true) %}
+      <tr><td>{{ cond }}</td>
+        <td><span class="pill risk-{{ rk.level }}">{{ rk.level }}</span></td>
+        <td>{{ '%+.3f'|format(rk.bonus) }}</td>
+        <td>{% for x in rk.reasons_for %}<div>✔ {{ x }}</div>{% endfor %}
+            {% for x in rk.reasons_against %}<div>✘ {{ x }}</div>{% endfor %}
+            {% if not rk.reasons_for and not rk.reasons_against %}<span class="muted">no strong weather signal</span>{% endif %}</td></tr>
+      {% endfor %}
+    </table>
+    <p class="muted">Weather only nudges the symptom score (draft rules in config/weather.yaml, need agronomist review). It never gives an answer by itself.</p>
+  {% else %}
+    <p class="muted">Weather not available for this case (location not found or weather service unreachable).</p>
+  {% endif %}
+</div>
+{% endif %}

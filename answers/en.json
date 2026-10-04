@@ -1,0 +1,75 @@
+{
+  "_note": "ENGLISH MASTER. Advice derived from knowledge/coffee_disease_knowledge_base.xlsx (Management / Treatment). Must be checked by an agronomist before recording.",
+  "prompt_welcome": {
+    "text": "Welcome to Shamba Call. For English, press 0.",
+    "audio": "welcome.mp3"
+  },
+  "prompt_invalid": {
+    "text": "Sorry, we did not understand your choice.",
+    "audio": "invalid.mp3"
+  },
+  "prompt_consent": {
+    "text": "This call is recorded to help you. Press 1 to keep your voice to improve the service. Press 2 to use it only for this answer.",
+    "audio": "consent.mp3"
+  },
+  "prompt_describe": {
+    "text": "After the beep, describe what you see on your coffee. Press any key when done.",
+    "audio": "describe.mp3"
+  },
+  "prompt_wait": {
+    "text": "Please wait a moment.",
+    "audio": "wait.mp3"
+  },
+  "healthy": {
+    "text": "Your coffee plant looks healthy.",
+    "audio": "healthy.mp3"
+  },
+  "leaf_rust": {
+    "text": "Your plant likely has coffee leaf rust. Confidence: high. Remove badly infected and fallen leaves, prune and reduce heavy shade so air can pass, and feed the plant well. Ask your extension officer which registered fungicide to use and when.",
+    "audio": "leaf_rust.mp3"
+  },
+  "coffee_berry_disease": {
+    "text": "Your plant likely has coffee berry disease. Confidence: high. Remove and destroy badly affected berries, prune so air can pass, and ask your extension officer which registered fungicide to use and when.",
+    "audio": "coffee_berry_disease.mp3"
+  },
+  "coffee_wilt_disease": {
+    "text": "Your plant likely has coffee wilt disease. Confidence: high. Do not move plants or soil from around this tree, clean your tools after cutting, and call your extension officer to confirm before removing the tree.",
+    "audio": "coffee_wilt_disease.mp3"
+  },
+  "cercospora": {
+    "text": "Your plant likely has brown eye spot. Confidence: high. Feed the plant well, improve air flow, and remove badly affected leaves. Ask your extension officer before using any fungicide.",
+    "audio": "cercospora.mp3"
+  },
+  "root_rot": {
+    "text": "Your plant likely has root rot. Confidence: high. Improve drainage so water does not stand around the plant, do not move soil from this spot, and ask your extension officer to check the roots.",
+    "audio": "root_rot.mp3"
+  },
+  "berry_borer": {
+    "text": "Your plant likely has the coffee berry borer insect. Confidence: high. Pick all ripe berries, collect and destroy fallen and leftover berries after harvest, and ask your extension officer about traps.",
+    "audio": "berry_borer.mp3"
+  },
+  "green_scale": {
+    "text": "Your plant likely has green scale insects. Confidence: high. Cut off heavily infested parts, control the ants that protect the insects, and ask your extension officer about a suitable treatment.",
+    "audio": "green_scale.mp3"
+  },
+  "berry_rot": {
+    "text": "Your plant likely has berry rot. Confidence: high. Remove and throw away rotten berries, keep fallen berries off wet ground, prune so air can pass, and ask your extension officer before using any fungicide.",
+    "audio": "berry_rot.mp3"
+  },
+  "not_sure": {
+    "text": "We are not sure. The extension officer will call you.",
+    "audio": "not_sure.mp3"
+  },
+  "goodbye": {
+    "text": "Thank you for calling Shamba Call. Goodbye.",
+    "audio": "goodbye.mp3"
+  },
+  "sms_privacy": {
+    "text": "Shamba Call keeps your message to improve advice. Your number is protected.",
+    "audio": null
+  },
+  "prompt_data_deleted": {
+    "text": "All your Shamba Call data has been deleted. Goodbye.",
+    "audio": "data_deleted.mp3"
+  }
+}

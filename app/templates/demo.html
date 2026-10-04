@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Shamba Call Demo{% endblock %}
+{% block content %}
+<div class="card">
+  <h2 style="margin-top:0">Describe the coffee problem</h2>
+  <form id="f" method="post" action="/demo" enctype="multipart/form-data">
+    <div class="row">
+      <div>
+        <label for="lang">Language</label>
+        <select id="lang" name="lang">
+          {% for code, cfg in languages.items() %}<option value="{{ code }}"{% if code == lang %} selected{% endif %}>{{ cfg.name }} ({{ code }})</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="mode">Models</label>
+        <select id="mode" name="mode">
+          {% for code, label in modes.items() %}<option value="{{ code }}"{% if code == mode %} selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="consent">Voice consent</label>
+        <select id="consent" name="consent">
+          <option value="answer_only">Use only for this answer (delete audio)</option>
+          <option value="keep_for_training">Keep my voice to improve the service</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="place">Farm location (for weather)</label>
+    <div class="row">
+      <div><input type="text" id="place" name="place" value="{{ place }}" placeholder="Village or town, e.g. Moshi"></div>
+      <div style="flex:0 0 auto"><button type="button" id="gps" class="secondary">📍 Use my location</button></div>
+    </div>
+    <input type="hidden" id="lat" name="lat"><input type="hidden" id="lon" name="lon">
+    <span id="gpsstatus" class="muted"></span>
+
+    <label>Speak (browser microphone)</label>
+    <button type="button" id="rec" class="secondary">● Record</button>
+    <span id="recstatus" class="muted"></span>
+    <audio id="preview" controls hidden></audio>
+
+    <label for="audio">…or upload an audio file</label>
+    <input type="file" id="audio" name="audio" accept="audio/*">
+
+    <label for="text">…or type the description</label>
+    <textarea id="text" name="text"{% if lang == 'ar' %} dir="rtl"{% endif %}></textarea>
+
+    <p><button type="submit" id="go">Get answer</button> <span id="busy" class="muted"></span></p>
+  </form>
+</div>
+
+{% if r %}
+{% set c = r.case %}
+<div class="card">
+  <p class="muted" style="margin:0">Answer ({{ c.language }})</p>
+  <p class="answer" {% if c.language == 'ar' %}dir="rtl"{% endif %}>{{ r.answer.text }}</p>
+  {% if r.answer.audio_rel %}<audio controls autoplay src="{{ r.answer.audio_rel }}"></audio>{% endif %}
+</div>
+<div class="card">
+  <table>
+    <tr><th>Result</th><td><span class="pill {{ c.result }}">{{ c.result }}</span>
+      {% if c.not_sure_reason %} <span class="muted">({{ c.not_sure_reason }})</span>{% endif %}
+      <span class="muted"> · status {{ c.status }}</span></td></tr>
+    <tr><th>Score</th><td>{{ c.score if c.score is not none else '—' }}</td></tr>
+    <tr><th>Top 2</th><td>{% for cond, s in (c.top2 or []) %}{{ cond }} ({{ s }}){% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+    <tr><th>Transcript</th><td {% if c.language == 'ar' %}dir="rtl"{% endif %}>{{ c.transcript or '—' }}</td></tr>
+    {% if c.asr_confidence is not none %}<tr><th>ASR confidence</th><td>{{ c.asr_confidence }} (detected: {{ c.detected_language }})</td></tr>{% endif %}
+    <tr><th>Symptoms found</th><td>{% for k, v in r.known.items() %}<code>{{ k }}={{ v }}</code> {% else %}none{% endfor %}</td></tr>
+    <tr><th>Location</th><td>{{ c.place or '—' }}</td></tr>
+    <tr><th>Models used</th><td>STT: {{ c.stt_provider or '—' }} · LLM: {{ c.llm_provider or '—' }}</td></tr>
+    <tr><th>Audio stored</th><td>{{ 'yes' if c.audio_path else 'no' }} ({{ c.audio_consent }})</td></tr>
+    <tr><th>Case</th><td class="muted">{{ c.id }}</td></tr>
+  </table>
+</div>
+{% include "_weather.html" %}
+{% endif %}
+
+<script>
+(function () {
+  const examples = {
+    sw: 'Majani ya kahawa yana unga wa rangi ya machungwa upande wa chini…',
+    ar: 'أوراق البن عليها مسحوق برتقالي على الجهة السفلية…',
+    hi: 'कॉफ़ी की पत्तियों के नीचे नारंगी रंग का पाउडर है…',
+  };
+  const langSel = document.getElementById('lang'), textEl = document.getElementById('text');
+  const syncLang = () => {
+    textEl.placeholder = examples[langSel.value] || '';
+    textEl.dir = langSel.value === 'ar' ? 'rtl' : 'ltr';
+  };
+  langSel.addEventListener('change', syncLang); syncLang();
+
+  const gps = document.getElementById('gps'), gpsStatus = document.getElementById('gpsstatus');
+  const latEl = document.getElementById('lat'), lonEl = document.getElementById('lon');
+  const placeEl = document.getElementById('place');
+  gps.addEventListener('click', () => {
+    if (!navigator.geolocation) { gpsStatus.textContent = 'Location not available in this browser.'; return; }
+    gpsStatus.textContent = 'Getting location…';
+    navigator.geolocation.getCurrentPosition(p => {
+      // rounded to ~1 km before it leaves the browser
+      latEl.value = p.coords.latitude.toFixed(2); lonEl.value = p.coords.longitude.toFixed(2);
+      gpsStatus.textContent = 'Location set: ' + latEl.value + ', ' + lonEl.value;
+    }, e => { gpsStatus.textContent = 'Could not get location: ' + e.message; }, { timeout: 10000 });
+  });
+  placeEl.addEventListener('input', () => { latEl.value = ''; lonEl.value = ''; gpsStatus.textContent = ''; });
+  const btn = document.getElementById('rec'), status = document.getElementById('recstatus');
+  const input = document.getElementById('audio'), preview = document.getElementById('preview');
+  let rec = null, chunks = [];
+  btn.addEventListener('click', async () => {
+    if (rec && rec.state === 'recording') { rec.stop(); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      rec = new MediaRecorder(stream); chunks = [];
+      rec.ondataavailable = e => chunks.push(e.data);
+      rec.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(chunks, { type: rec.mimeType || 'audio/webm' });
+        const ext = (rec.mimeType || '').includes('ogg') ? 'ogg' : (rec.mimeType || '').includes('mp4') ? 'm4a' : 'webm';
+        const dt = new DataTransfer();
+        dt.items.add(new File([blob], 'recording.' + ext, { type: blob.type }));
+        input.files = dt.files;
+        preview.src = URL.createObjectURL(blob); preview.hidden = false;
+        btn.textContent = '● Record again'; status.textContent = 'Recording attached.';
+      };
+      rec.start(); btn.textContent = '■ Stop'; status.textContent = 'Recording…';
+    } catch (e) { status.textContent = 'Microphone not available: ' + e.message; }
+  });
+  document.getElementById('f').addEventListener('submit', () => {
+    document.getElementById('go').disabled = true;
+    document.getElementById('busy').textContent = document.getElementById('mode').value === 'local'
+      ? 'Processing on this machine… (local models can take up to a minute)'
+      : 'Processing… (speech recognition can take a few seconds)';
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+# Knowledge base seed profiles, derived from knowledge/coffee_disease_knowledge_base.xlsx (team-provided).
+# Each profile lists the symptoms that matter (1 = typical, -1 = should be absent). Unlisted = 0 (neutral).
+# Listing all typical symptoms does not penalise a farmer who mentions only some of them:
+# only the symptoms the farmer actually reports are scored.
+# The workbook itself still needs citations (e.g. CABI PlantwisePlus, national coffee research institutes).
+profiles:
+  healthy:
+    { yellow_spots_on_leaf: -1, orange_powder_under_leaf: -1, brown_spot_grey_center: -1, leaves_yellowing: -1,
+      leaves_falling: -1, wilting: -1, dry_leaves_stay_attached: -1, green_insects_on_leaves_stems: -1,
+      sticky_leaves: -1, black_sooty_mold: -1, branch_dieback: -1, dark_inside_stem: -1, poor_growth_stunted: -1,
+      dark_soft_roots: -1, dark_sunken_spots_on_green_berries: -1, berries_dry_shrivel: -1,
+      berries_falling_early: -1, small_hole_in_berry: -1, insects_inside_berry: -1, soft_rotten_berries: -1,
+      mold_on_berries: -1 }
+
+  # Hemileia vastatrix — yellow/orange spots, orange powder underneath, early leaf drop
+  leaf_rust:
+    { yellow_spots_on_leaf: 1, orange_powder_under_leaf: 1, leaves_yellowing: 1, leaves_falling: 1 }
+
+  # Colletotrichum kahawae — dark sunken lesions on green berries, shrivel, drop; wet weather
+  coffee_berry_disease:
+    { dark_sunken_spots_on_green_berries: 1, berries_dry_shrivel: 1, berries_falling_early: 1, wet_humid_weather: 1 }
+
+  # Fusarium xylarioides — wilting, dry leaves stay attached, dieback, dark wood inside stem
+  coffee_wilt_disease:
+    { wilting: 1, leaves_yellowing: 1, dry_leaves_stay_attached: 1, branch_dieback: 1, dark_inside_stem: 1 }
+
+  # Cercospora spp. — round brown spots with grey/tan centre and dark border
+  cercospora:
+    { brown_spot_grey_center: 1, leaves_yellowing: 1, leaves_falling: 1 }
+
+  # Soil-borne fungi — poor growth, yellowing, wilting, dark soft roots, waterlogging
+  root_rot:
+    { poor_growth_stunted: 1, leaves_yellowing: 1, wilting: 1, leaves_falling: 1, dark_soft_roots: 1,
+      waterlogged_soil: 1 }
+
+  # Hypothenemus hampei — tiny hole in berry, tunnels/insects inside, berry drop
+  berry_borer:
+    { small_hole_in_berry: 1, insects_inside_berry: 1, berries_falling_early: 1 }
+
+  # Coccus viridis — green insects on leaves/stems, sticky honeydew, black sooty mould, ants
+  green_scale:
+    { green_insects_on_leaves_stems: 1, sticky_leaves: 1, black_sooty_mold: 1, leaves_yellowing: 1, ants_present: 1 }
+
+  # Several fungi — soft dark rotten berries, mould, shrivel, drop; wet weather
+  berry_rot:
+    { soft_rotten_berries: 1, mold_on_berries: 1, berries_dry_shrivel: 1, berries_falling_early: 1,
+      wet_humid_weather: 1 }

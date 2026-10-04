@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+.pytest_cache/
+.idea/
+eval/clips/
+eval/extract_details.csv

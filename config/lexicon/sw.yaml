@@ -1,0 +1,73 @@
+# Swahili keyword cross-check for symptom extraction. Human-written; a native speaker should review.
+#
+# How it is used (app/pipeline/lexicon.py):
+#   - Each `present` pattern found in a clause sets the symptom to 1, unless a negator appears up to
+#     `negation_window` words before it in the same clause; then it is -1.
+#   - Each `absent` pattern sets the symptom to -1.
+#   - `negated_generic`: a generic word after a negator ("hakuna madoa" = "no spots") sets the listed
+#     symptoms to -1, unless one of the `unless` words is in the same clause.
+#   - Merge with the LLM: LLM said 0 -> take the keyword value; LLM and keywords disagree -> 0 (unknown).
+# Patterns are case-insensitive regular expressions. Noun classes help: majani -> ya-, buni -> zi-, mti -> u-.
+
+negators: [hakuna, hamna, hayana, hazina, haina, hana, bila, wala, si, sio, siyo]
+negation_window: 4
+clause_split: '[.;!?,]|\blakini\b'
+
+symptoms:
+  yellow_spots_on_leaf:
+    present: ['madoa( \w+)? ya (njano|manjano)', 'madoa (ma)?njano']
+  orange_powder_under_leaf:
+    present: ['unga wa (rangi ya )?(ma)?chungwa', 'vumbi (la|lenye) (rangi ya )?(ma)?chungwa']
+  brown_spot_grey_center:
+    present: ['madoa( \w+)? ya kahawia ya mviringo', 'katikati (ni |ya |yake )?kijivu']
+  leaves_yellowing:
+    present: ['majani( \w+)? (yana|yame)(geuka|kuwa) (ya )?(ma)?njano', 'majani( \w+)? (yana|yame)pauka', 'yamepauka']
+  leaves_falling:
+    present: ['majani( \w+)? (yana|yame)(anguka|dondoka|pukutika)']
+    absent: ['majani( \w+)? haya(angu|dondo|puku)ki']
+  wilting:
+    present: ['(una|ume|yana|yame)nyauka', 'kunyauka', 'mnyauko', '(yana|yame)legea']
+    absent: ['(haya|hau)nyauki']
+  dry_leaves_stay_attached:
+    present: ['majani makavu.{0,40}(yanabaki|yameshikilia|yananing|hayaanguki)']
+  green_insects_on_leaves_stems:
+    present: ['wadudu( \w+){0,2} wa kijani', 'magamba ya kijani']
+  sticky_leaves:
+    present: ['(yana|ya)nata', 'kunata', 'yanayonata']
+  black_sooty_mold:
+    present: ['masizi', 'ukungu mweusi', 'kama majivu meusi']
+  ants_present:
+    present: ['sisimizi', 'siafu']
+  branch_dieback:
+    present: ['matawi( \w+)? (yana|yame)(kauka|kufa)']
+  dark_inside_stem:
+    present: ['ndani ya shina.{0,30}(nyeusi|jeusi|meusi|kahawia)', 'shina.{0,20}ndani.{0,20}(nyeusi|jeusi)']
+  poor_growth_stunted:
+    present: ['hau(kui|kuwi)', 'umedumaa', 'kudumaa']
+  dark_soft_roots:
+    present: ['mizizi.{0,30}(myeusi|laini|imeoza|inaoza)']
+  waterlogged_soil:
+    present: ['maji (yanatuama|yametuama|yamesimama)', 'udongo.{0,20}(umejaa maji|chepechepe)']
+  dark_sunken_spots_on_green_berries:
+    present: ['madoa meusi yaliyozama', 'buni.{0,40}madoa meusi', 'madoa meusi.{0,40}buni']
+  berries_dry_shrivel:
+    present: ['buni.{0,30}(zinakauka|zimekauka|zimesinyaa|zinasinyaa)', '(zinakauka|zimekauka|zimesinyaa)']
+  berries_falling_early:
+    present: ['buni.{0,30}(zina|zime)(anguka|dondoka|pukutika)']
+    absent: ['buni( \w+)? hazi(angu|dondo|puku)ki']
+  small_hole_in_berry:
+    present: ['matundu', 'vitundu', 'mashimo madogo']
+  insects_inside_berry:
+    present: ['ndani( yake)?.{0,30}(wadudu|mende|vinyesi|vijia)', 'wadudu( \w+){0,2} ndani']
+  soft_rotten_berries:
+    present: ['buni.{0,30}(zimeoza|zinaoza)', '(zimeoza|zinaoza)']
+  mold_on_berries:
+    present: ['buni.{0,40}ukungu (mweupe|wa waridi)', 'zina ukungu', 'buni.{0,30}ukungu']
+  wet_humid_weather:
+    present: ['mvua (nyingi|kubwa)', 'mvua (imenyesha|inanyesha|ilinyesha) sana', 'unyevu mwingi', 'unyevunyevu']
+    absent: ['mvua haijanyesha', 'mvua haikunyesha', 'hakuna mvua', 'ukame', 'kiangazi']
+
+negated_generic:
+  madoa: { symptoms: [yellow_spots_on_leaf, brown_spot_grey_center], unless: [buni] }
+  unga: { symptoms: [orange_powder_under_leaf] }
+  wadudu: { symptoms: [green_insects_on_leaves_stems, insects_inside_berry] }

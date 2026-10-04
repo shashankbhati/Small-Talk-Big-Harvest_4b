@@ -1,0 +1,31 @@
+# Fixed symptom schema. Values: 1 = yes, -1 = no, 0 = unknown / not mentioned.
+# Derived from knowledge/coffee_disease_knowledge_base.xlsx ("Key Symptoms" and "How a Farmer May Describe It").
+symptoms:
+  # leaves
+  yellow_spots_on_leaf:           "Small pale-yellow or yellow-orange spots on the upper leaf surface"
+  orange_powder_under_leaf:       "Orange/yellow powder (spores) on the underside of leaves"
+  brown_spot_grey_center:         "Round or oval brown spots with a grey/tan centre and dark border (eye-like)"
+  leaves_yellowing:               "Leaves turning pale or yellow overall"
+  leaves_falling:                 "Leaves dropping early"
+  wilting:                        "Leaves or branches wilting / drooping"
+  dry_leaves_stay_attached:       "Dried leaves stay hanging on the branch"
+  green_insects_on_leaves_stems:  "Small soft green insects stuck on the underside of leaves or young stems"
+  sticky_leaves:                  "Leaves are sticky (honeydew)"
+  black_sooty_mold:               "Black soot-like coating on leaves"
+  ants_present:                   "Many ants on the plant / around insects"
+  # stem, roots, whole plant
+  branch_dieback:                 "Branches drying and dying back"
+  dark_inside_stem:               "Dark discoloured wood inside a cut stem"
+  poor_growth_stunted:            "Plant grows poorly, stays small, slowly declines"
+  dark_soft_roots:                "Roots are dark, soft or rotten"
+  waterlogged_soil:               "Soil stays waterlogged / water stands around the plant"
+  # berries
+  dark_sunken_spots_on_green_berries: "Dark sunken spots on young green berries"
+  berries_dry_shrivel:            "Berries dry up, shrivel or turn black"
+  berries_falling_early:          "Berries falling before they ripen"
+  small_hole_in_berry:            "Tiny round hole in the berry (often at the tip)"
+  insects_inside_berry:           "Tunnels, small beetles or insect waste inside the berry"
+  soft_rotten_berries:            "Berries soft, mushy, brown/black and rotten"
+  mold_on_berries:                "Visible mould / fungal growth on berries"
+  # weather
+  wet_humid_weather:              "A lot of rain or humid weather recently"

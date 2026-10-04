@@ -1,0 +1,83 @@
+{
+  "run_at": "2026-10-04 05:13",
+  "scenarios": [
+    {
+      "scenario": "Health check: all model backends reachable",
+      "status": "PASS",
+      "seconds": 1.5,
+      "detail": "Together, Ollama (gemma3:4b) and local Whisper all available"
+    },
+    {
+      "scenario": "Demo text (sw): leaf rust description → leaf rust answer in sw",
+      "status": "PASS",
+      "seconds": 2.7,
+      "detail": "leaf_rust, score 1.0, LLM=together"
+    },
+    {
+      "scenario": "Demo text (ar): leaf rust description → leaf rust answer in ar",
+      "status": "PASS",
+      "seconds": 2.6,
+      "detail": "leaf_rust, score 1.0, LLM=together"
+    },
+    {
+      "scenario": "Demo text (hi): leaf rust description → leaf rust answer in hi",
+      "status": "PASS",
+      "seconds": 3.5,
+      "detail": "leaf_rust, score 1.0, LLM=together"
+    },
+    {
+      "scenario": "Demo voice (sw, consent=answer_only): audio → leaf rust, audio deleted",
+      "status": "PASS",
+      "seconds": 4.1,
+      "detail": "leaf_rust, ASR conf 0.95, STT=together, LLM=together, audio deleted"
+    },
+    {
+      "scenario": "Demo voice (ar, consent=keep): audio → leaf rust, audio kept",
+      "status": "PASS",
+      "seconds": 3.4,
+      "detail": "leaf_rust, ASR conf 0.96, audio stored"
+    },
+    {
+      "scenario": "SMS (Arabic): Arabic reply, privacy line only on first contact",
+      "status": "PASS",
+      "seconds": 5.5,
+      "detail": "Arabic leaf-rust reply; privacy notice on first SMS only"
+    },
+    {
+      "scenario": "Phone (IVR): call → Arabic → consent → recording → answer played",
+      "status": "PASS",
+      "seconds": 3.4,
+      "detail": "leaf_rust played in Arabic, consent=answer_only → audio deleted"
+    },
+    {
+      "scenario": "Feedback loop: not-sure case labeled by expert → same input now answered",
+      "status": "PASS",
+      "seconds": 6.3,
+      "detail": "not_sure (weak_match) → labeled berry_borer → answered berry_borer; 1 verified case in KB"
+    },
+    {
+      "scenario": "Review page requires login",
+      "status": "PASS",
+      "seconds": 0.0,
+      "detail": "401 without / with wrong credentials"
+    },
+    {
+      "scenario": "Privacy: phone number never stored in plain text; key 9 deletes caller data",
+      "status": "PASS",
+      "seconds": 0.0,
+      "detail": "3 cases with hashed/encrypted numbers; all deleted via key 9"
+    },
+    {
+      "scenario": "Together outage → local fallback (text)",
+      "status": "PASS",
+      "seconds": 27.5,
+      "detail": "leaf_rust via STT=None, LLM=ollama"
+    },
+    {
+      "scenario": "Together outage → local fallback (voice)",
+      "status": "PASS",
+      "seconds": 39.5,
+      "detail": "leaf_rust via STT=local, LLM=ollama"
+    }
+  ]
+}

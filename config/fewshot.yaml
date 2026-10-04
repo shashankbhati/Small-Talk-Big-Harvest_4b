@@ -1,0 +1,35 @@
+# Few-shot examples for the extraction prompt (synthetic, written by the team; NOT in the eval set).
+# Only non-zero flags are listed; all other symptoms are 0.
+examples:
+  sw:
+    - text: "Majani ya kahawa yana unga wa rangi ya machungwa upande wa chini, na madoa ya njano juu. Majani yanaanguka."
+      flags: { orange_powder_under_leaf: 1, yellow_spots_on_leaf: 1, leaves_falling: 1 }
+    - text: "Kuna matundu madogo kwenye buni, na ndani kuna wadudu wadogo. Majani hayana madoa ya njano."
+      flags: { small_hole_in_berry: 1, insects_inside_berry: 1, yellow_spots_on_leaf: -1 }
+    # Extra Swahili examples: farming words and negations that small local models miss
+    - text: "Mti unanyauka na majani makavu yanabaki yameshikilia matawi."
+      flags: { wilting: 1, dry_leaves_stay_attached: 1 }
+    - text: "Kuna wadudu wadogo wa kijani chini ya majani, na majani yananata."
+      flags: { green_insects_on_leaves_stems: 1, sticky_leaves: 1 }
+    - text: "Buni zimeoza na ni laini, baada ya mvua nyingi."
+      flags: { soft_rotten_berries: 1, wet_humid_weather: 1 }
+    - text: "Hakuna madoa kwenye majani wala matundu kwenye buni."
+      flags: { yellow_spots_on_leaf: -1, brown_spot_grey_center: -1, small_hole_in_berry: -1 }
+    - text: "Mizizi ni myeusi na laini, na maji yanatuama shambani."
+      flags: { dark_soft_roots: 1, waterlogged_soil: 1 }
+  ar:
+    - text: "أوراق البن عليها بقع بنية مستديرة وسطها رمادي وحافتها داكنة."
+      flags: { brown_spot_grey_center: 1 }
+    - text: "الثمار الخضراء الصغيرة عليها بقع داكنة غائرة، ولا توجد ثقوب فيها."
+      flags: { dark_sunken_spots_on_green_berries: 1, small_hole_in_berry: -1 }
+    # wilting is not the same as poor growth (local models confuse them)
+    - text: "الأغصان ذابلة ومتدلية منذ أيام."
+      flags: { wilting: 1 }
+  hi:
+    - text: "पत्तियों पर काली कालिख जैसी परत है और पत्तियाँ चिपचिपी हैं।"
+      flags: { black_sooty_mold: 1, sticky_leaves: 1 }
+    - text: "पौधा ठीक से बढ़ नहीं रहा, पत्तियाँ पीली पड़ रही हैं, और कोई कीड़ा नहीं दिखता।"
+      flags: { poor_growth_stunted: 1, leaves_yellowing: 1, green_insects_on_leaves_stems: -1 }
+    # wilting is not the same as poor growth (local models confuse them)
+    - text: "टहनियाँ मुरझा कर नीचे लटक गई हैं।"
+      flags: { wilting: 1 }

@@ -1,0 +1,10 @@
+provider,model,lang,fleurs,n,wer,mean_asr_conf,below_min_conf,sec_per_clip
+local,small,sw,sw_ke,25,0.739,0.519,2,8.58
+local,small,ar,ar_eg,25,0.232,0.774,0,7.41
+local,small,hi,hi_in,25,0.343,0.685,1,13.47
+together,openai/whisper-large-v3,sw,sw_ke,25,0.326,0.867,0,1.48
+together,openai/whisper-large-v3,ar,ar_eg,25,0.078,0.969,0,1.32
+together,openai/whisper-large-v3,hi,hi_in,25,0.237,0.878,2,1.68
+local,large-v3-turbo,sw,sw_ke,25,0.347,0.804,1,1.21
+local,large-v3-turbo,ar,ar_eg,25,0.076,0.94,0,1.06
+local,large-v3-turbo,hi,hi_in,25,0.151,0.92,0,1.74
