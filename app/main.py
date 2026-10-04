@@ -4,12 +4,13 @@ import sys
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import STATIC_DIR, get_settings
 from app.db import init_db
-from app.routes import demo, review, sms, voice
+from app.routes import demo, farmers, review, sms, voice
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("app")
@@ -90,6 +91,13 @@ app.include_router(demo.router)
 app.include_router(review.router)
 app.include_router(voice.router)
 app.include_router(sms.router)
+app.include_router(farmers.router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in get_settings().cors_origins.split(",") if o.strip()],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type", "ngrok-skip-browser-warning"],
+)
 
 
 @app.get("/health")

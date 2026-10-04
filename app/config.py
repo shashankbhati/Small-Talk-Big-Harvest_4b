@@ -72,6 +72,11 @@ class Settings(BaseSettings):
     phone_salt: str = "change-me"
     fernet_key: str = ""
 
+    # Farmer registry (registration app): call language and country code for numbers typed without "+"
+    farmer_language: str = "hi"
+    default_country_code: str = "+91"
+    cors_origins: str = "*"  # comma-separated origins of the registration app; the API uses bearer tokens, no cookies
+
     review_user: str = "expert"
     review_password: str = "change-me"
 

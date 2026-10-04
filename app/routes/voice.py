@@ -3,12 +3,12 @@ import logging
 
 import httpx
 from fastapi import APIRouter, BackgroundTasks, Depends, Query
-from sqlalchemy import delete
 from twilio.twiml.voice_response import VoiceResponse
 
 from app.cases import create_case
 from app.config import get_settings
 from app.db import SessionLocal
+from app.farmers import delete_caller_data, find_farmer
 from app.languages import default_language, language_for_key, languages
 from app.models import Case
 from app.pipeline.run import run_case
@@ -31,10 +31,16 @@ def _welcome_gather(resp: VoiceResponse, case_id: str, attempt: int) -> None:
 
 @router.post("/incoming")
 def incoming(form: dict = Depends(validate_twilio)):
-    with SessionLocal() as session:
-        case = create_case(session, "voice", default_language(), phone=form.get("From") or None,
-                           audio_consent="answer_only")
+    phone = form.get("From") or None
     resp = VoiceResponse()
+    with SessionLocal() as session:
+        farmer = find_farmer(session, phone)
+        if farmer:  # registered: language and farm location are known, so skip the language menu
+            case = create_case(session, "voice", farmer.language, phone=phone, audio_consent="answer_only",
+                               lat=farmer.lat, lon=farmer.lon, place=farmer.place)
+            _ask_describe(resp, case.id, case.language)
+            return twiml(resp)
+        case = create_case(session, "voice", default_language(), phone=phone, audio_consent="answer_only")
     _welcome_gather(resp, case.id, 0)
     return twiml(resp)
 
@@ -49,8 +55,7 @@ def language(case_id: str, attempt: int = 0, form: dict = Depends(validate_twili
             resp.hangup()
             return twiml(resp)
         if digit == "9" and case.phone_hash:  # delete-my-data
-            session.execute(delete(Case).where(Case.phone_hash == case.phone_hash))
-            session.commit()
+            delete_caller_data(session, case.phone_hash)
             speak(resp, "prompt_data_deleted", default_language())
             resp.hangup()
             return twiml(resp)
@@ -82,6 +87,12 @@ def consent(case_id: str, form: dict = Depends(validate_twilio)):
     with SessionLocal() as session:
         case = session.get(Case, case_id)
         if case is None:
+            resp.hangup()
+            return twiml(resp)
+        if digit == "9" and case.phone_hash:  # registered callers skip the language menu, so 9 works here too
+            lang = case.language
+            delete_caller_data(session, case.phone_hash)
+            speak(resp, "prompt_data_deleted", lang)
             resp.hangup()
             return twiml(resp)
         # Only an explicit "1" keeps audio. Anything else -> answer_only (privacy by default).
