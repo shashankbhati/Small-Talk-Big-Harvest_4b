@@ -50,6 +50,24 @@ class Case(Base):
     delete_after: Mapped[date] = mapped_column(Date, default=_delete_after)
 
 
+class Farmer(Base):
+    """Farmer registry (filled by the registration app). Lets a plain phone call find the farm."""
+    __tablename__ = "farmers"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    registered_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+    phone_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    token_hash: Mapped[str] = mapped_column(String(64), index=True)  # the app's bearer token, hashed
+    language: Mapped[str] = mapped_column(String(8))
+    # farm location, rounded to ~1 km
+    lat: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lon: Mapped[float | None] = mapped_column(Float, nullable=True)
+    place: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    crops: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    area_acres: Mapped[float | None] = mapped_column(Float, nullable=True)
+    delete_after: Mapped[date] = mapped_column(Date, default=_delete_after)
+
+
 class KnowledgeProfile(Base):
     __tablename__ = "knowledge_profiles"
 

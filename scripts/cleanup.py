@@ -11,11 +11,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from sqlalchemy import select, update  # noqa: E402
+from sqlalchemy import delete, select, update  # noqa: E402
 
 from app.config import get_settings  # noqa: E402
 from app.db import SessionLocal, init_db  # noqa: E402
-from app.models import Case, KnowledgeProfile  # noqa: E402
+from app.models import Case, Farmer, KnowledgeProfile  # noqa: E402
 from app.pipeline import calllog  # noqa: E402
 from app.storage import get_storage  # noqa: E402
 
@@ -39,6 +39,7 @@ def cleanup(session=None, today: date | None = None) -> dict:
         if ids:
             session.execute(update(KnowledgeProfile).where(KnowledgeProfile.case_id.in_(ids)).values(case_id=None))
         stats["cases_deleted"] = len(ids)
+        stats["farmers_deleted"] = session.execute(delete(Farmer).where(Farmer.delete_after < today)).rowcount
 
         leftovers = session.scalars(
             select(Case).where(Case.audio_consent == "answer_only", Case.audio_path.is_not(None))).all()

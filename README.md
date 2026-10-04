@@ -105,6 +105,19 @@ uvicorn app.main:app --port 8000
 
 **Call flow:** welcome in all languages (1 Swahili · 2 Arabic · 3 Hindi · 9 delete my data) → consent (1 keep voice · 2 this answer only) → beep, describe (up to 30 s) → "please wait" while processing runs in the background (the call checks every 3 s, up to ~75 s) → answer → goodbye.
 
+### Farmer registry (registration app)
+A family member registers the farm once in the web app; after that a plain phone call from that number is matched to the farm.
+
+| Endpoint | What it does |
+|---|---|
+| `POST /api/farmers` | `{phone, lat, lon, place, crops, area_acres, consent}` → `{token}`. Location is rounded to ~1 km; a typed village is geocoded. |
+| `GET /api/farmers/me/cases` | Answers given on calls since registration (`Authorization: Bearer <token>`). Same human-written text as the call; an expert's label replaces a "not sure". |
+| `PUT /api/farmers/me` · `DELETE /api/farmers/me` | Change details · delete the registration and all cases. |
+
+- A registered caller **skips the language menu** (`FARMER_LANGUAGE`, default `hi`) and the case gets the farm location, so **weather is used on phone calls** too.
+- Stored: phone hash, token hash, rounded location, crops, field size. Key `9` on the call deletes the registration as well.
+- **Limit:** there is no SMS code check. Registering a number again issues a new token and hides earlier cases, but a real service needs to verify the number.
+
 **SMS:** language from the prefix (`SW`, `AR`, `HI`) or from the script (Arabic → ar, Devanagari → hi, otherwise sw). The first reply includes a one-line privacy notice.
 
 **Retention:** run `python scripts/cleanup.py` daily. It deletes cases past `delete_after` (default 365 days) with their audio, and any leftover "answer only" audio, and model call logs older than `RETENTION_DAYS`.
