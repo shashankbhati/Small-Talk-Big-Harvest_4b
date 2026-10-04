@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coffee Helpline Walkthrough</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; the workflow figure is the centrepiece, everything else explains it. */
+:root {
+  --bg: #f4f7f3;
+  --surface: #ffffff;
+  --fg: #16221b;
+  --muted: #56675d;
+  --line: #cfd9d1;
+  --accent: #1c6a48;
+  --human: #9a5a06;
+  --human-bg: #fbf1de;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111814; --surface: #19221d; --fg: #e6eee8; --muted: #9db0a4; --line: #2f3d35;
+    --accent: #6fcf9f; --human: #f0b659; --human-bg: #33280f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111814; --surface: #19221d; --fg: #e6eee8; --muted: #9db0a4; --line: #2f3d35;
+  --accent: #6fcf9f; --human: #f0b659; --human-bg: #33280f; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+.page { max-width: 920px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: flex; flex-direction: column; gap: 44px; }
+header { display: flex; flex-direction: column; gap: 14px; }
+.eyebrow { font-family: var(--mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-size: clamp(30px, 5.2vw, 46px); line-height: 1.08; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 24px; line-height: 1.2; margin: 0; text-wrap: balance; }
+h3 { font-size: 17px; font-weight: 600; margin: 0; }
+p { margin: 0; max-width: 68ch; }
+section { display: flex; flex-direction: column; gap: 16px; }
+.statement { border-left: 4px solid var(--accent); padding: 4px 0 4px 16px; font-size: 19px; max-width: 64ch; }
+.muted { color: var(--muted); }
+figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.scroll svg { display: block; width: 100%; min-width: 780px; height: auto; color: var(--fg); }
+figcaption { font-size: 15px; color: var(--muted); max-width: 72ch; }
+table { border-collapse: collapse; width: 100%; font-size: 15.5px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tablewrap { overflow-x: auto; }
+.tablewrap table { min-width: 620px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.panel.human { background: var(--human-bg); border-color: var(--human); }
+ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; max-width: 70ch; }
+code { font-family: var(--mono); font-size: .88em; }
+.tag { font-family: var(--mono); font-size: 12px; color: var(--human); letter-spacing: .04em; text-transform: uppercase; }
+footer { font-size: 14.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="eyebrow">Small Talk, Big Harvest · Agriculture · Small AI for Development</div>
+  <h1>Coffee Helpline: how a phone call becomes safe crop advice</h1>
+  <p class="statement">Because of this tool, a smallholder coffee farmer will know within minutes of a phone call what is likely affecting her crop and what to do, which she would otherwise learn at the extension officer's next visit or never. We know because the officer reaches her village about twice a year.</p>
+  <p class="muted">The farmer needs only a basic phone and a voice call in Hindi. No app, no data bundle, no reading.</p>
+</header>
+
+<section>
+  <h2>The workflow</h2>
+  <figure>
+    <div class="scroll">
+      <svg viewBox="0 0 900 560" role="img" aria-label="Workflow: the farm is registered once in a smartphone app. On each call, speech becomes text, a small language model fills a fixed symptom form, and a rule-based matcher uses the form, recent weather and confirmed cases to rank problems. A confident result plays a pre-recorded answer; an unsure result goes to an officer, whose label feeds back into the matcher.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          <marker id="ahh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b8770f"/></marker>
+        </defs>
+        <g font-family="IBM Plex Mono, Consolas, monospace" font-size="11" fill="currentColor" opacity=".7" letter-spacing=".8">
+          <text x="30" y="18">ONCE, ON THE FAMILY SMARTPHONE</text>
+          <text x="30" y="178">EVERY CALL, FROM ANY PHONE</text>
+          <text x="30" y="348">WHAT THE FARMER GETS</text>
+        </g>
+        <g fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="30" y="30" width="150" height="56" rx="4"/>
+          <rect x="320" y="30" width="150" height="56" rx="4"/>
+          <rect x="555" y="30" width="140" height="56" rx="4"/>
+          <rect x="30" y="190" width="140" height="56" rx="4"/>
+          <rect x="205" y="190" width="140" height="56" rx="4"/>
+          <rect x="380" y="190" width="140" height="56" rx="4"/>
+          <rect x="555" y="190" width="140" height="56" rx="4"/>
+          <rect x="730" y="190" width="140" height="56" rx="4"/>
+          <rect x="555" y="360" width="140" height="56" rx="4"/>
+          <rect x="380" y="360" width="140" height="56" rx="4"/>
+          <rect x="205" y="360" width="140" height="56" rx="4"/>
+        </g>
+        <g fill="none" stroke="#b8770f" stroke-width="1.8">
+          <rect x="730" y="360" width="140" height="56" rx="4"/>
+          <rect x="730" y="472" width="140" height="56" rx="4"/>
+        </g>
+        <g font-family="Source Sans 3, Segoe UI, sans-serif" fill="currentColor" text-anchor="middle">
+          <g font-size="13.5" font-weight="600">
+            <text x="105" y="54">Smartphone app</text>
+            <text x="395" y="54">Farmer registry</text>
+            <text x="625" y="54">Recent weather</text>
+            <text x="100" y="214">Phone call</text>
+            <text x="275" y="214">Speech to text</text>
+            <text x="450" y="214">Symptom form</text>
+            <text x="625" y="214">Matcher</text>
+            <text x="800" y="214">Confidence check</text>
+            <text x="625" y="384">Pre-recorded answer</text>
+            <text x="450" y="384">Farmer hears it</text>
+            <text x="275" y="384">Shown in the app</text>
+            <text x="800" y="384">Officer review</text>
+            <text x="800" y="496">Confirmed cases</text>
+          </g>
+          <g font-size="11.5" opacity=".8">
+            <text x="105" y="72">register the farm</text>
+            <text x="395" y="72">number to farm</text>
+            <text x="625" y="72">last 60 days</text>
+            <text x="100" y="232">Hindi, up to 30 s</text>
+            <text x="275" y="232">Whisper</text>
+            <text x="450" y="232">small LLM, 24 fields</text>
+            <text x="625" y="232">rules, 8 problems</text>
+            <text x="800" y="232">score and margin</text>
+            <text x="625" y="402">fixed Hindi text + audio</text>
+            <text x="450" y="402">on the same call</text>
+            <text x="275" y="402">to read again later</text>
+            <text x="800" y="402">a person decides</text>
+            <text x="800" y="514">human-verified only</text>
+          </g>
+          <g font-size="11.5">
+            <text x="250" y="51">number, location,</text>
+            <text x="250" y="65">crop</text>
+            <text x="512" y="51">location</text>
+            <text x="187" y="208">audio</text>
+            <text x="362" y="208">text</text>
+            <text x="537" y="204">yes / no</text>
+            <text x="537" y="262">unknown</text>
+            <text x="712" y="208">rank</text>
+            <text x="662" y="128" text-anchor="start">tie-break only</text>
+            <text x="700" y="300">sure</text>
+            <text x="537" y="380">plays</text>
+            <text x="362" y="380">saved</text>
+          </g>
+          <g font-size="11.5" fill="#b8770f" font-weight="600">
+            <text x="842" y="300" text-anchor="start">not sure</text>
+            <text x="812" y="448" text-anchor="start">label</text>
+            <text x="776" y="143">adds verified cases</text>
+          </g>
+        </g>
+        <g fill="none" stroke="currentColor" stroke-width="1.4" marker-end="url(#ah)">
+          <path d="M180 58 H318"/>
+          <path d="M470 58 H553"/>
+          <path d="M590 86 V188"/>
+          <path d="M170 218 H203"/>
+          <path d="M345 218 H378"/>
+          <path d="M520 218 H553"/>
+          <path d="M695 218 H728"/>
+          <path d="M770 246 V310 H625 V358"/>
+          <path d="M555 388 H522"/>
+          <path d="M380 388 H347"/>
+        </g>
+        <g fill="none" stroke="#b8770f" stroke-width="1.8" marker-end="url(#ahh)">
+          <path d="M830 246 V358"/>
+          <path d="M800 416 V470"/>
+          <path d="M870 500 H888 V150 H660 V188" stroke-dasharray="5 4"/>
+        </g>
+      </svg>
+    </div>
+    <figcaption>The language model only fills a fixed form. Rules decide, and the farmer hears text a person wrote. The amber path is the fail-safe: when the system is not sure, a person decides, and only that person's label teaches the system.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Step by step</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Step</th><th>What happens</th><th>Built with</th><th>Why this way</th></tr></thead>
+      <tbody>
+        <tr><td>Register</td><td>A family member enters the phone number, farm location, crop and field size once.</td><td>Installable web app, works offline</td><td>A call can only be matched to a farm if a registry exists. Location is rounded to about 1 km.</td></tr>
+        <tr><td>Call</td><td>The farmer calls and, after the beep, describes what she sees.</td><td>Twilio voice line</td><td>Works on any phone and needs no literacy.</td></tr>
+        <tr><td>Listen</td><td>The recording becomes Hindi text.</td><td>Whisper (open weights)</td><td>If the recognition confidence is low, the case goes to the officer.</td></tr>
+        <tr><td>Understand</td><td>The text becomes 24 symptom fields, each yes, no or not mentioned.</td><td>Small open LLM, forced to a fixed schema</td><td>The model cannot write advice, so it cannot invent advice.</td></tr>
+        <tr><td>Decide</td><td>The symptoms are scored against 8 coffee problems. Recent weather can break a tie.</td><td>Plain rules and Open-Meteo weather</td><td>Every decision can be read and audited line by line.</td></tr>
+        <tr><td>Answer</td><td>The farmer hears a pre-recorded answer, or that the officer will call her.</td><td>Human-written text and audio</td><td>A fixed list of answers can be checked for safety.</td></tr>
+        <tr><td>Follow up</td><td>The answer appears in the app. Unsure cases wait in the officer's queue.</td><td>Review page for the officer</td><td>The officer's label is the only thing that updates the knowledge base.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where the AI is, and where it is not</h2>
+  <div class="two">
+    <div class="panel">
+      <h3>AI does two jobs</h3>
+      <ul>
+        <li>Turns spoken Hindi into text.</li>
+        <li>Turns free text into a fixed symptom form.</li>
+      </ul>
+      <p class="muted">A keypad menu or SMS form cannot take "the leaves have orange powder underneath and are falling". Free speech in a local language is the part only AI can do.</p>
+    </div>
+    <div class="panel">
+      <h3>AI does not do these</h3>
+      <ul>
+        <li>Choose the diagnosis. Rules do.</li>
+        <li>Write what the farmer hears. People did.</li>
+        <li>Learn from its own guesses. Only officer labels count.</li>
+      </ul>
+    </div>
+    <div class="panel human">
+      <span class="tag">Fail-safe</span>
+      <h3>The system says "not sure" when</h3>
+      <ul>
+        <li>fewer than 2 symptoms were understood,</li>
+        <li>the best match scores below 0.75,</li>
+        <li>the top two problems are within 0.15,</li>
+        <li>speech recognition confidence is below 0.45,</li>
+        <li>or anything fails.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How it fits Small AI</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Rule</th><th>How we meet it</th></tr></thead>
+      <tbody>
+        <tr><td>A device she already has</td><td>Any phone that can make a call. The smartphone app is used once, by a family member.</td></tr>
+        <tr><td>Core feature works offline</td><td>The farmer needs no data connection, only a voice call. Both models can run on one laptop at the cooperative without cloud AI; the weather step is skipped when there is no internet and the answer flow stays the same.</td></tr>
+        <tr><td>Small model files</td><td>Open-weight models that fit on a laptop: Whisper large-v3-turbo and a 4-billion-parameter LLM (gemma3:4b).</td></tr>
+        <tr><td>A named local language</td><td>Hindi, by voice. Adding a language is configuration, translated answers and recordings, with no code change.</td></tr>
+        <tr><td>A person makes the final call</td><td>Every unsure case goes to the extension officer, and the advice itself tells the farmer to confirm with the officer before drastic steps.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Evidence so far</h2>
+  <p>Twelve Hindi test descriptions, spoken as synthetic audio and run through the whole chain. A wrong answer matters more than a missed one.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Setup</th><th>Correct</th><th>Wrong</th><th>Not sure</th><th>Time per case</th></tr></thead>
+      <tbody>
+        <tr><td>Hosted open models (Whisper large-v3, Qwen3.5-9B)</td><td class="num">83%</td><td class="num">0%</td><td class="num">17%</td><td class="num">about 9 s</td></tr>
+        <tr><td>Fully local (Whisper large-v3-turbo, gemma3:4b)</td><td class="num">92%</td><td class="num">8%</td><td class="num">0%</td><td class="num">about 23 s</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Hindi speech recognition on 25 FLEURS clips: word error rate 0.15 with the local model. The same model reaches 0.35 on Swahili, which shows how a less-supported language would fare.</p>
+  <p class="muted">The one wrong local answer came from a misheard word that led the model to add a symptom. A Hindi keyword cross-check, which already exists for Swahili, is the planned fix.</p>
+</section>
+
+<section>
+  <h2>Privacy</h2>
+  <ul>
+    <li>Consent is given once, at registration in the app. The call itself has no consent question.</li>
+    <li>The voice recording is used for that one answer and deleted after transcription.</li>
+    <li>Phone numbers are stored as a salted hash, plus an encrypted copy for the officer's call back.</li>
+    <li>Location is kept at about 1 km precision. Data is deleted after 12 months.</li>
+    <li>"Delete my data" in the app removes everything. Callers who are not registered can press 9 on the call.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What this does not cover yet</h2>
+  <ul>
+    <li>Only 8 coffee problems. Anything else gets "not sure".</li>
+    <li>The knowledge base and advice texts are drafts and have not been reviewed by an agronomist.</li>
+    <li>The audio answers are synthetic placeholder voices, not native-speaker recordings.</li>
+    <li>No recordings from real farmers yet. Tests use clean or synthetic speech; phone audio is harder.</li>
+    <li>By default the prototype uses a hosted service for the two open models, because it is faster. The fully local setup works but takes about 23 seconds on a laptop with a small graphics card.</li>
+    <li>A caller who has not registered in the app is recorded without being asked for consent first.</li>
+    <li>Registration has no SMS code check, and the crop and field size are stored but not yet used in the diagnosis.</li>
+    <li>The link between app registration and the call is covered by automated tests and has not yet been run on a live call.</li>
+  </ul>
+</section>
+
+<footer>
+  Stack: FastAPI, SQLite, Twilio Voice, faster-whisper, Ollama, Open-Meteo, React (installable web app). Speech test data: FLEURS (CC-BY-4.0). Test sentences and knowledge base: written by the team.
+</footer>
+
+</div>
+</body>
+</html>

@@ -4,13 +4,24 @@
 
 > Because of Small Talk, a smallholder coffee farmer will know within minutes whether her coffee is sick and what to do, which she would otherwise learn months late or never. We know because coffee yields in East Africa have stagnated for decades (FAOSTAT), there is roughly one public extension officer per 1,000+ farm households in Kenya, and most rural farmers own a basic phone rather than a smartphone (GSMA). *(TODO team: add exact figures and links.)*
 
-Hack-Nation × World Bank "Small AI for Development", Challenge 04, **Agriculture** track.
+Hack-Nation × World Bank "Small AI for Development", Challenge 04, **Agriculture** track. Team **Small Talk, Big Harvest**.
+
+## Start here
+
+**This `main` branch is the product:** the helpline backend that answers the calls, with the farmer registry the app registers into.
+
+| Where | What |
+|---|---|
+| [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md) | Technical walkthrough for judges: workflow diagram, where AI is and is not used, evidence, limits |
+| `main` (this branch) | Helpline backend: voice line, speech-to-text, symptom extraction, matcher, officer review, registration API |
+| [`ui` branch](../../tree/ui) | Registration app for the family smartphone, live at https://small-talk-big-harvest.vercel.app |
+| [`prototype-v1` branch](../../tree/prototype-v1) | The first prototype from the start of the weekend, replaced by this code |
 
 ---
 
 ## How it works
 
-The farmer speaks or texts in **Swahili, Arabic or Hindi** and gets one of three answers in that language:
+The farmer speaks or texts in **Hindi** (the language enabled in this build; Swahili and Arabic answer files exist but are switched off) and gets one of three answers in that language:
 
 | Answer | Example |
 |---|---|
@@ -22,7 +33,7 @@ Experts label the unsure cases. Verified labels are added to the knowledge base,
 
 ```
 Farmer's phone (voice / SMS)
-   → Twilio: language menu, consent menu, recording      [Africa's Talking in production]
+   → Twilio: language menu (skipped for registered farmers), recording      [Africa's Talking in production]
    → FastAPI server
         1. Speech-to-text          Whisper large-v3 (Together)   → fallback: faster-whisper on the laptop
         2. Extract symptom flags   Qwen3.5-9B (Together)          → fallback: gemma3:4b via Ollama
@@ -44,7 +55,7 @@ A keypad menu can't capture *"majani yana unga wa machungwa chini na yanaanguka"
 | **The LLM never writes advice** | The LLM is only called in `app/pipeline/extract.py`, forced into a JSON schema (24 symptom keys, each `-1/0/1`) and validated with Pydantic. Every sentence the farmer hears or reads comes from human-written `answers/<lang>.json`. |
 | **"Not sure" is a first-class outcome** | Reasons: `too_few_symptoms`, `weak_match`, `too_close`, `low_asr_confidence`, `extraction_failed`, `timeout`. Any error → "not sure". |
 | **Only human-verified labels update the knowledge base** | Only the expert review form (`app/routes/review.py`) inserts `verified_case` rows. The system never learns from its own predictions. |
-| **Privacy** | Consent at the start of the call (default: audio deleted after transcription). Phone numbers are hashed (SHA-256 + salt) and Fernet-encrypted only for the officer callback. The Twilio copy of the recording is deleted after download. Retention cleanup job; no phone numbers or transcripts in INFO logs (tested); the model call log (`MODEL_LOG_DIR`) does hold transcripts but never phone numbers, and is deleted after `RETENTION_DAYS` (set `MODEL_LOG_DIR=` to turn it off); IVR key `9` deletes all of the caller's data. |
+| **Privacy** | Consent is given at registration in the app; the call has no consent question, and its audio is used for that answer only and deleted after transcription. Phone numbers are hashed (SHA-256 + salt) and Fernet-encrypted only for the officer callback. The Twilio copy of the recording is deleted after download. Retention cleanup job; no phone numbers or transcripts in INFO logs (tested); the model call log (`MODEL_LOG_DIR`) does hold transcripts but never phone numbers, and is deleted after `RETENTION_DAYS` (set `MODEL_LOG_DIR=` to turn it off); IVR key `9` deletes all of the caller's data. |
 
 ## Models and hosting
 
@@ -115,7 +126,8 @@ A family member registers the farm once in the web app; after that a plain phone
 | `PUT /api/farmers/me` · `DELETE /api/farmers/me` | Change details · delete the registration and all cases. |
 
 - A registered caller **skips the language menu** (`FARMER_LANGUAGE`, default `hi`) and the case gets the farm location, so **weather is used on phone calls** too.
-- Stored: phone hash, token hash, rounded location, crops, field size. Key `9` on the call deletes the registration as well.
+- A registered caller goes straight to the beep, like every caller after the language key. There is no consent question on the call.
+- Stored: phone hash, token hash, rounded location, crops, field size. `DELETE /api/farmers/me` (the app's "Delete my data") removes the registration and all cases; key `9` on the language menu does the same for callers who hear the menu.
 - **Limit:** there is no SMS code check. Registering a number again issues a new token and hides earlier cases, but a real service needs to verify the number.
 
 **SMS:** language from the prefix (`SW`, `AR`, `HI`) or from the script (Arabic → ar, Devanagari → hi, otherwise sw). The first reply includes a one-line privacy notice.
