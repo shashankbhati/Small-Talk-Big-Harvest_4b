@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,7 +63,11 @@ class Settings(BaseSettings):
     twilio_account_sid: str = ""
     twilio_auth_token: str = ""
     twilio_validate: bool = True
-    public_base_url: str = "http://localhost:8000"
+    # public https URL of this server (ngrok: `ngrok http 8000`); BASE_URL also accepted, as on main
+    public_base_url: str = Field("http://localhost:8000", validation_alias=AliasChoices("PUBLIC_BASE_URL", "BASE_URL"))
+    # set = open an ngrok tunnel at startup; its https URL replaces public_base_url (no separate `ngrok http`)
+    ngrok_authtoken: str = ""
+    ngrok_domain: str = ""  # optional static domain from the ngrok dashboard, keeps the Twilio webhook fixed
 
     phone_salt: str = "change-me"
     fernet_key: str = ""

@@ -9,6 +9,7 @@ pyyaml
 httpx
 cryptography
 twilio
+ngrok  # optional: tunnel opened at startup when NGROK_AUTHTOKEN is set
 faster-whisper
 jiwer
 pytest

@@ -35,6 +35,22 @@ def _lan_ip() -> str | None:
         return None
 
 
+async def _start_ngrok(port: str) -> None:
+    """Open an ngrok tunnel to this server and use its https URL as public_base_url."""
+    settings = get_settings()
+    if not settings.ngrok_authtoken:
+        return
+    try:
+        import ngrok
+
+        opts = {"authtoken": settings.ngrok_authtoken}
+        if settings.ngrok_domain:
+            opts["domain"] = settings.ngrok_domain
+        settings.public_base_url = (await ngrok.forward(int(port), **opts)).url()
+    except Exception:
+        log.exception("ngrok tunnel failed; keeping PUBLIC_BASE_URL=%s", settings.public_base_url)
+
+
 def _log_links() -> None:
     host = _cli_opt("--host", "127.0.0.1")
     port = _cli_opt("--port", "8000")
@@ -50,11 +66,14 @@ def _log_links() -> None:
         bases.append(public)
     for base in bases:
         log.info("demo: %s/demo   review: %s/review", base, base)
+    if public.startswith("https://"):
+        log.info("Twilio webhooks: voice POST %s/voice/incoming   sms POST %s/sms/incoming", public, public)
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     init_db()
+    await _start_ngrok(_cli_opt("--port", "8000"))
     _log_links()
     if get_settings().whisper_preload:
         import threading
@@ -75,11 +94,13 @@ app.include_router(sms.router)
 
 @app.get("/health")
 def health(deep: bool = False) -> dict:
+    base = get_settings().public_base_url.rstrip("/")
+    out = {"status": "ok", "voice_webhook": f"{base}/voice/incoming", "sms_webhook": f"{base}/sms/incoming"}
     if not deep:
-        return {"status": "ok"}
+        return out
     from app.health import deep_health
 
-    return {"status": "ok", **deep_health()}
+    return {**out, **deep_health()}
 
 
 @app.get("/", include_in_schema=False)

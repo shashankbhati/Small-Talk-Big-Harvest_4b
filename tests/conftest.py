@@ -17,6 +17,7 @@ os.environ["FERNET_KEY"] = "P3qBLfZml22orTgIkNjU5jtvV4rilhlNiVJp4WpSEZM="
 os.environ["REVIEW_USER"] = "expert"
 os.environ["REVIEW_PASSWORD"] = "pw"
 os.environ["PUBLIC_BASE_URL"] = "http://testserver"
+os.environ["NGROK_AUTHTOKEN"] = ""  # never open a real tunnel in tests
 # Deterministic model config: never hit real APIs; fallback tests enable chains explicitly.
 os.environ["TOGETHER_API_KEY"] = "test-key"
 os.environ["STT_PROVIDER"] = "together"

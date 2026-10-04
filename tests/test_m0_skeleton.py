@@ -26,4 +26,5 @@ def test_seed(db):
 
 
 def test_health(client):
-    assert client.get("/health").json() == {"status": "ok"}
+    body = client.get("/health").json()
+    assert body["status"] == "ok" and body["voice_webhook"].endswith("/voice/incoming")
