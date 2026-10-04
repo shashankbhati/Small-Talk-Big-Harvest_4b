@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+python-dotenv>=1.0
+requests>=2.31
+twilio>=9.0
+faster-whisper>=1.0
+av<19

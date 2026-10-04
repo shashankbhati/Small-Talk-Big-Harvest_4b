@@ -1,0 +1,417 @@
+{
+  "_note": "DRAFT knowledge base for Arabica coffee. Symptom descriptions follow common extension guidance (e.g. CABI Crop Protection Compendium, coffee extension manuals); the NUMBERS are hand-set starting priors, NOT measured values. They must be reviewed by an agronomist and are updated from confirmed cases. Cite sources in the submission.",
+  "features": {
+    "spot_colour": [
+      "orange_yellow",
+      "brown",
+      "black",
+      "none",
+      "unknown"
+    ],
+    "spot_location": [
+      "underside",
+      "top",
+      "both",
+      "unknown"
+    ],
+    "powder": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "leaf_drop": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "leaf_yellowing": [
+      "old_leaves",
+      "all_leaves",
+      "no",
+      "unknown"
+    ],
+    "leaf_trails": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "wilting": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "berry_damage": [
+      "small_hole",
+      "dark_sunken",
+      "none",
+      "unknown"
+    ]
+  },
+  "problems": {
+    "leaf_rust": {
+      "label": "Coffee leaf rust",
+      "base_prior": 0.25,
+      "weather": {
+        "wet": 1.8,
+        "dry": 0.6,
+        "warm": 1.4,
+        "cool": 0.8
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.8,
+          "brown": 0.1,
+          "black": 0.02,
+          "none": 0.08
+        },
+        "spot_location": {
+          "underside": 0.8,
+          "top": 0.08,
+          "both": 0.12
+        },
+        "powder": {
+          "yes": 0.85,
+          "no": 0.15
+        },
+        "leaf_drop": {
+          "yes": 0.7,
+          "no": 0.3
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.25,
+          "all_leaves": 0.1,
+          "no": 0.65
+        },
+        "leaf_trails": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "wilting": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.05,
+          "none": 0.9
+        }
+      }
+    },
+    "brown_eye_spot": {
+      "label": "Brown eye spot (Cercospora)",
+      "base_prior": 0.12,
+      "weather": {
+        "wet": 1.1,
+        "dry": 1.2,
+        "warm": 1.2,
+        "cool": 0.9
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.1,
+          "brown": 0.8,
+          "black": 0.05,
+          "none": 0.05
+        },
+        "spot_location": {
+          "underside": 0.1,
+          "top": 0.65,
+          "both": 0.25
+        },
+        "powder": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "leaf_drop": {
+          "yes": 0.45,
+          "no": 0.55
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.25,
+          "all_leaves": 0.15,
+          "no": 0.6
+        },
+        "leaf_trails": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "wilting": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.3,
+          "none": 0.65
+        }
+      }
+    },
+    "leaf_miner": {
+      "label": "Coffee leaf miner",
+      "base_prior": 0.1,
+      "weather": {
+        "wet": 0.6,
+        "dry": 1.6,
+        "warm": 1.2,
+        "cool": 0.9
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.05,
+          "brown": 0.75,
+          "black": 0.05,
+          "none": 0.15
+        },
+        "spot_location": {
+          "underside": 0.1,
+          "top": 0.75,
+          "both": 0.15
+        },
+        "powder": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "leaf_drop": {
+          "yes": 0.5,
+          "no": 0.5
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.1,
+          "all_leaves": 0.05,
+          "no": 0.85
+        },
+        "leaf_trails": {
+          "yes": 0.85,
+          "no": 0.15
+        },
+        "wilting": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.05,
+          "none": 0.9
+        }
+      }
+    },
+    "coffee_berry_disease": {
+      "label": "Coffee berry disease",
+      "base_prior": 0.1,
+      "weather": {
+        "wet": 1.8,
+        "dry": 0.5,
+        "warm": 0.7,
+        "cool": 1.5
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.03,
+          "brown": 0.25,
+          "black": 0.4,
+          "none": 0.32
+        },
+        "spot_location": {
+          "underside": 0.2,
+          "top": 0.4,
+          "both": 0.4
+        },
+        "powder": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "leaf_drop": {
+          "yes": 0.15,
+          "no": 0.85
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.1,
+          "all_leaves": 0.05,
+          "no": 0.85
+        },
+        "leaf_trails": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "wilting": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.85,
+          "none": 0.1
+        }
+      }
+    },
+    "berry_borer": {
+      "label": "Coffee berry borer",
+      "base_prior": 0.12,
+      "weather": {
+        "wet": 0.9,
+        "dry": 1.1,
+        "warm": 1.4,
+        "cool": 0.7
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.03,
+          "brown": 0.1,
+          "black": 0.12,
+          "none": 0.75
+        },
+        "spot_location": {
+          "underside": 0.3,
+          "top": 0.35,
+          "both": 0.35
+        },
+        "powder": {
+          "yes": 0.1,
+          "no": 0.9
+        },
+        "leaf_drop": {
+          "yes": 0.1,
+          "no": 0.9
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.05,
+          "all_leaves": 0.05,
+          "no": 0.9
+        },
+        "leaf_trails": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "wilting": {
+          "yes": 0.05,
+          "no": 0.95
+        },
+        "berry_damage": {
+          "small_hole": 0.85,
+          "dark_sunken": 0.05,
+          "none": 0.1
+        }
+      }
+    },
+    "drought_stress": {
+      "label": "Drought / water stress",
+      "base_prior": 0.12,
+      "weather": {
+        "wet": 0.3,
+        "dry": 2.5,
+        "warm": 1.4,
+        "cool": 0.8
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.05,
+          "brown": 0.35,
+          "black": 0.05,
+          "none": 0.55
+        },
+        "spot_location": {
+          "underside": 0.2,
+          "top": 0.4,
+          "both": 0.4
+        },
+        "powder": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "leaf_drop": {
+          "yes": 0.65,
+          "no": 0.35
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.3,
+          "all_leaves": 0.4,
+          "no": 0.3
+        },
+        "leaf_trails": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "wilting": {
+          "yes": 0.85,
+          "no": 0.15
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.1,
+          "none": 0.85
+        }
+      }
+    },
+    "nutrient_deficiency": {
+      "label": "Nutrient deficiency (e.g. nitrogen)",
+      "base_prior": 0.12,
+      "weather": {
+        "wet": 1.0,
+        "dry": 1.0,
+        "warm": 1.0,
+        "cool": 1.0
+      },
+      "likelihood": {
+        "spot_colour": {
+          "orange_yellow": 0.05,
+          "brown": 0.15,
+          "black": 0.03,
+          "none": 0.77
+        },
+        "spot_location": {
+          "underside": 0.2,
+          "top": 0.4,
+          "both": 0.4
+        },
+        "powder": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "leaf_drop": {
+          "yes": 0.35,
+          "no": 0.65
+        },
+        "leaf_yellowing": {
+          "old_leaves": 0.75,
+          "all_leaves": 0.2,
+          "no": 0.05
+        },
+        "leaf_trails": {
+          "yes": 0.03,
+          "no": 0.97
+        },
+        "wilting": {
+          "yes": 0.1,
+          "no": 0.9
+        },
+        "berry_damage": {
+          "small_hole": 0.05,
+          "dark_sunken": 0.05,
+          "none": 0.9
+        }
+      }
+    },
+    "other": {
+      "label": "Something else / not in our list",
+      "base_prior": 0.07,
+      "weather": {
+        "wet": 1.0,
+        "dry": 1.0,
+        "warm": 1.0,
+        "cool": 1.0
+      },
+      "likelihood": "uniform"
+    }
+  },
+  "advice": {
+    "leaf_rust": "This looks like coffee leaf rust. Remove and burn badly affected leaves, keep shade moderate so leaves dry faster, and ask the cooperative about a copper-based spray before the next rains. The extension officer has been informed.",
+    "brown_eye_spot": "This looks like brown eye spot. It often comes with stressed or underfed plants. Check that the plants get enough fertiliser and some shade. The extension officer has been informed.",
+    "leaf_miner": "This looks like coffee leaf miner. Pick and destroy leaves with brown tunnels. Do not spray broad insecticides that kill natural enemies; ask the extension officer first.",
+    "coffee_berry_disease": "This looks like coffee berry disease on the green berries. Remove and destroy infected berries and talk to the extension officer about protective spraying in the wet season.",
+    "berry_borer": "This looks like coffee berry borer. Pick up all fallen and dried berries, harvest ripe berries often, and ask the cooperative about borer traps.",
+    "drought_stress": "This looks like water stress from dry weather. Mulch around the plants to keep the soil moist and keep some shade trees. The extension officer has been informed.",
+    "nutrient_deficiency": "This looks like a nutrient shortage, often nitrogen. Ask the cooperative about fertiliser or compost for your coffee plants.",
+    "unsure": "I am not sure what this is. I have sent your report to the extension officer, who will call you back. Please keep a few affected leaves to show them.",
+    "no_input": "Sorry, I did not understand which signs you see. Please call again and describe the colour of the spots, where they are on the leaf, and if leaves or berries are damaged."
+  }
+}
