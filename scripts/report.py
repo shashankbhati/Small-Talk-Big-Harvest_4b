@@ -81,7 +81,7 @@ def results_md() -> str:
     speech, text = rows(SPEECH[0]), rows(TEXT[0])
 
     md = [
-        "# Shamba Call: End-to-End Test Results",
+        "# Small Talk: End-to-End Test Results",
         "",
         f"Generated {time.strftime('%Y-%m-%d %H:%M')} by `scripts/report.py`. "
         f"Machine: {platform.system()} {platform.release()}, NVIDIA RTX 3050 Ti Laptop (4 GB), 14 GB RAM.",

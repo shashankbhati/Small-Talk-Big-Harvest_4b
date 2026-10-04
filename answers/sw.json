@@ -1,7 +1,7 @@
 {
   "_note": "Swahili. DRAFT translation of en.json (advice from knowledge/coffee_disease_knowledge_base.xlsx) — a native speaker must check before recording.",
   "prompt_welcome": {
-    "text": "Karibu Shamba Call. Kwa Kiswahili, bonyeza 1.",
+    "text": "Karibu Small Talk. Kwa Kiswahili, bonyeza 1.",
     "audio": "welcome.mp3"
   },
   "prompt_invalid": {
@@ -61,15 +61,15 @@
     "audio": "not_sure.mp3"
   },
   "goodbye": {
-    "text": "Asante kwa kupiga Shamba Call. Kwaheri.",
+    "text": "Asante kwa kupiga Small Talk. Kwaheri.",
     "audio": "goodbye.mp3"
   },
   "sms_privacy": {
-    "text": "Shamba Call huhifadhi ujumbe wako kuboresha ushauri. Namba yako inalindwa.",
+    "text": "Small Talk huhifadhi ujumbe wako kuboresha ushauri. Namba yako inalindwa.",
     "audio": null
   },
   "prompt_data_deleted": {
-    "text": "Data zako zote za Shamba Call zimefutwa. Kwaheri.",
+    "text": "Data zako zote za Small Talk zimefutwa. Kwaheri.",
     "audio": "data_deleted.mp3"
   }
 }

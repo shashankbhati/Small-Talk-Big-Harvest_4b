@@ -25,13 +25,14 @@ def test_voice_flow(client, db, monkeypatch, tmp_path):
     case = db.scalars(select(Case)).one()
     assert case.phone_hash and case.phone_encrypted and PHONE not in case.phone_encrypted
 
-    r = client.post(f"/voice/language?case_id={case.id}", data={"Digits": "2"})
-    assert "<Gather" in r.text
-    r = client.post(f"/voice/consent?case_id={case.id}", data={"Digits": "1"})
-    assert "<Record" in r.text
+    from app.languages import languages
+
+    lang, cfg = next(iter(languages().items()))
+    r = client.post(f"/voice/language?case_id={case.id}", data={"Digits": cfg["ivr_key"]})
+    assert "<Record" in r.text and "/voice/consent" not in r.text  # no consent question: straight to recording
     db.expire_all()
     case = db.get(Case, case.id)
-    assert (case.language, case.audio_consent) == ("ar", "keep_for_training")
+    assert (case.language, case.audio_consent) == (lang, "answer_only")
 
     # pretend the background job finished
     seen = {}
@@ -47,7 +48,7 @@ def test_voice_flow(client, db, monkeypatch, tmp_path):
     db.commit()
     r = client.post(f"/voice/result?case_id={case.id}&try=2")
     assert "<Hangup" in r.text
-    assert "صدأ" in r.text or "leaf_rust.mp3" in r.text  # Arabic answer (Say fallback or Play)
+    assert f"/{lang}/leaf_rust.mp3" in r.text or "<Say" in r.text  # answer in the chosen language
 
 
 def test_voice_invalid_digit_repeats_then_defaults(client, db):
@@ -56,15 +57,19 @@ def test_voice_invalid_digit_repeats_then_defaults(client, db):
     r = client.post(f"/voice/language?case_id={case.id}&attempt=0", data={"Digits": "7"})
     assert "attempt=1" in r.text
     r = client.post(f"/voice/language?case_id={case.id}&attempt=1", data={"Digits": "7"})
-    assert "/voice/consent" in r.text
+    assert "<Record" in r.text
     db.expire_all()
-    assert db.get(Case, case.id).language == "sw"
+    from app.languages import default_language
+
+    assert db.get(Case, case.id).language == default_language()
 
 
 def test_voice_timeout_goes_to_review(client, db):
     client.post("/voice/incoming", data={"From": PHONE})
     case = db.scalars(select(Case)).one()
-    r = client.post(f"/voice/result?case_id={case.id}&try=25")
+    from app.config import get_settings
+
+    r = client.post(f"/voice/result?case_id={case.id}&try={get_settings().voice_max_tries}")
     assert "<Hangup" in r.text
     db.expire_all()
     c = db.get(Case, case.id)

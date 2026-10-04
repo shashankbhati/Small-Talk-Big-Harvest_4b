@@ -1,4 +1,4 @@
-# Shamba Call: End-to-End Test Results
+# Small Talk: End-to-End Test Results
 
 Generated 2026-10-04 05:37 by `scripts/report.py`. Machine: Windows 11, NVIDIA RTX 3050 Ti Laptop (4 GB), 14 GB RAM.
 

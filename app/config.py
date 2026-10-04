@@ -13,7 +13,7 @@ STATIC_DIR = ROOT / "static"
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
 
-    database_url: str = "sqlite:///./data/shamba.db"
+    database_url: str = "sqlite:///./data/small_talk.db"
     storage_backend: str = "local"
     audio_dir: str = "./data/audio"
     minio_endpoint: str = ""
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     ollama_think: str = ""  # "" = don't send; "false" for thinking models such as qwen3
     ollama_keep_alive: str = "30m"
     ollama_num_ctx: int = 8192  # the extraction prompt is ~4.3k tokens; Ollama's default 4096 truncates it
-    llm_timeout: float = 120.0  # local models
+    llm_timeout: float = 300.0  # local models (Ollama), seconds
     # Cross-check LLM flags with config/lexicon/<lang>.yaml: always | local (only the Ollama model) | off.
     # On the 8-disease test set it costs Qwen3.5-9B nothing and recovers Swahili words it misses ("matundu").
     # For the local model it is also strict: every "yes" needs keyword support.
@@ -58,7 +58,7 @@ class Settings(BaseSettings):
     # One JSON line per model call + per case (input, output, latency): <dir>/model_calls-YYYY-MM-DD.jsonl
     model_log_dir: str = "./data/logs"  # "" = off
 
-    voice_max_tries: int = 25  # /voice/result polls (3 s each, ~75 s) before "not sure"; local fallback needs ~40-70 s
+    voice_max_tries: int = 100  # /voice/result polls (3 s each, ~5 min) before "not sure"; covers LLM_TIMEOUT=300 for Ollama
 
     twilio_account_sid: str = ""
     twilio_auth_token: str = ""

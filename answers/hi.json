@@ -1,7 +1,7 @@
 {
   "_note": "Hindi. DRAFT translation of en.json (advice from knowledge/coffee_disease_knowledge_base.xlsx) — a native speaker must check before recording.",
   "prompt_welcome": {
-    "text": "शम्बा कॉल में आपका स्वागत है। हिंदी के लिए 3 दबाएँ।",
+    "text": "स्मॉल टॉक में आपका स्वागत है। हिंदी के लिए 3 दबाएँ।",
     "audio": "welcome.mp3"
   },
   "prompt_invalid": {
@@ -61,15 +61,15 @@
     "audio": "not_sure.mp3"
   },
   "goodbye": {
-    "text": "शम्बा कॉल पर फ़ोन करने के लिए धन्यवाद। नमस्ते।",
+    "text": "स्मॉल टॉक पर फ़ोन करने के लिए धन्यवाद। नमस्ते।",
     "audio": "goodbye.mp3"
   },
   "sms_privacy": {
-    "text": "शम्बा कॉल सलाह सुधारने के लिए आपका संदेश रखता है। आपका नंबर सुरक्षित है।",
+    "text": "स्मॉल टॉक सलाह सुधारने के लिए आपका संदेश रखता है। आपका नंबर सुरक्षित है।",
     "audio": null
   },
   "prompt_data_deleted": {
-    "text": "शम्बा कॉल में आपका सारा डेटा मिटा दिया गया है। नमस्ते।",
+    "text": "स्मॉल टॉक में आपका सारा डेटा मिटा दिया गया है। नमस्ते।",
     "audio": "data_deleted.mp3"
   }
 }

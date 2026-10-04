@@ -84,7 +84,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="Shamba Call", lifespan=lifespan)
+app = FastAPI(title="Small Talk", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 app.include_router(demo.router)
 app.include_router(review.router)

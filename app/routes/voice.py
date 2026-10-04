@@ -1,4 +1,4 @@
-"""Twilio voice IVR: language -> consent -> record -> background pipeline -> poll -> answer."""
+"""Twilio voice IVR: language -> record -> background pipeline -> poll -> answer."""
 import logging
 
 import httpx
@@ -62,10 +62,17 @@ def language(case_id: str, attempt: int = 0, form: dict = Depends(validate_twili
         case.language = lang or default_language()
         session.commit()
         lang = case.language
-    g = resp.gather(num_digits=1, action=f"/voice/consent?case_id={case_id}", timeout=6)
-    speak(g, "prompt_consent", lang)
-    resp.redirect(f"/voice/consent?case_id={case_id}")
+    # no consent question: straight to the recording; audio stays "answer_only" (deleted after the answer)
+    _ask_describe(resp, case_id, lang)
     return twiml(resp)
+
+
+def _ask_describe(resp: VoiceResponse, case_id: str, lang: str) -> None:
+    speak(resp, "prompt_describe", lang)
+    resp.record(max_length=30, finish_on_key=DIGITS, play_beep=True, timeout=5,
+                action=f"/voice/recorded?case_id={case_id}")
+    # Twilio continues here if nothing was recorded
+    resp.redirect(f"/voice/result?case_id={case_id}&try={get_settings().voice_max_tries}")
 
 
 @router.post("/consent")
@@ -81,11 +88,7 @@ def consent(case_id: str, form: dict = Depends(validate_twilio)):
         case.audio_consent = "keep_for_training" if digit == "1" else "answer_only"
         session.commit()
         lang = case.language
-    speak(resp, "prompt_describe", lang)
-    resp.record(max_length=30, finish_on_key=DIGITS, play_beep=True, timeout=5,
-                action=f"/voice/recorded?case_id={case_id}")
-    # Twilio continues here if nothing was recorded
-    resp.redirect(f"/voice/result?case_id={case_id}&try={get_settings().voice_max_tries}")
+    _ask_describe(resp, case_id, lang)
     return twiml(resp)
 
 

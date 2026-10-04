@@ -1,7 +1,7 @@
 {
   "_note": "Arabic. DRAFT translation of en.json (advice from knowledge/coffee_disease_knowledge_base.xlsx) — a native speaker must check before recording.",
   "prompt_welcome": {
-    "text": "مرحبا بك في شامبا كول. للعربية، اضغط 2.",
+    "text": "مرحبا بك في سمول توك. للعربية، اضغط 2.",
     "audio": "welcome.mp3"
   },
   "prompt_invalid": {
@@ -61,15 +61,15 @@
     "audio": "not_sure.mp3"
   },
   "goodbye": {
-    "text": "شكرا لاتصالك بشامبا كول. مع السلامة.",
+    "text": "شكرا لاتصالك بسمول توك. مع السلامة.",
     "audio": "goodbye.mp3"
   },
   "sms_privacy": {
-    "text": "يحتفظ شامبا كول برسالتك لتحسين النصائح. رقمك محمي.",
+    "text": "يحتفظ سمول توك برسالتك لتحسين النصائح. رقمك محمي.",
     "audio": null
   },
   "prompt_data_deleted": {
-    "text": "تم حذف جميع بياناتك في شامبا كول. مع السلامة.",
+    "text": "تم حذف جميع بياناتك في سمول توك. مع السلامة.",
     "audio": "data_deleted.mp3"
   }
 }

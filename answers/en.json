@@ -1,7 +1,7 @@
 {
   "_note": "ENGLISH MASTER. Advice derived from knowledge/coffee_disease_knowledge_base.xlsx (Management / Treatment). Must be checked by an agronomist before recording.",
   "prompt_welcome": {
-    "text": "Welcome to Shamba Call. For English, press 0.",
+    "text": "Welcome to Small Talk. For English, press 0.",
     "audio": "welcome.mp3"
   },
   "prompt_invalid": {
@@ -61,15 +61,15 @@
     "audio": "not_sure.mp3"
   },
   "goodbye": {
-    "text": "Thank you for calling Shamba Call. Goodbye.",
+    "text": "Thank you for calling Small Talk. Goodbye.",
     "audio": "goodbye.mp3"
   },
   "sms_privacy": {
-    "text": "Shamba Call keeps your message to improve advice. Your number is protected.",
+    "text": "Small Talk keeps your message to improve advice. Your number is protected.",
     "audio": null
   },
   "prompt_data_deleted": {
-    "text": "All your Shamba Call data has been deleted. Goodbye.",
+    "text": "All your Small Talk data has been deleted. Goodbye.",
     "audio": "data_deleted.mp3"
   }
 }

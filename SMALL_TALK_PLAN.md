@@ -1,10 +1,10 @@
-# Shamba Call — Implementation Plan
+# Small Talk — Implementation Plan
 
-> Hand this file to Claude Code: *"Read SHAMBA_CALL_PLAN.md and implement it milestone by milestone. Run the tests and the acceptance check at the end of each milestone before moving on."*
+> Hand this file to Claude Code: *"Read SMALL_TALK_PLAN.md and implement it milestone by milestone. Run the tests and the acceptance check at the end of each milestone before moving on."*
 
 ## 0. What we are building
 
-**Shamba Call** lets a smallholder coffee farmer **call a phone number (or send an SMS) from a basic phone**, describe her coffee problem **in her own language**, and get back one of three answers in that language:
+**Small Talk** lets a smallholder coffee farmer **call a phone number (or send an SMS) from a basic phone**, describe her coffee problem **in her own language**, and get back one of three answers in that language:
 
 1. **Healthy**: "Your coffee plant looks healthy."
 2. **Disease (sure)**: "Your plant likely has coffee leaf rust. Confidence: high. Do this: …"
@@ -73,7 +73,7 @@ Farmer's phone (voice / SMS)
 ## 3. Repository layout
 
 ```
-shamba-call/
+small-talk/
 ├─ README.md
 ├─ .env.example
 ├─ pyproject.toml            # or requirements.txt
@@ -330,7 +330,7 @@ HTTP basic auth (`REVIEW_USER` / `REVIEW_PASSWORD` from env).
 
 ## 13. Environment (`.env.example`)
 ```
-DATABASE_URL=sqlite:///./data/shamba.db
+DATABASE_URL=sqlite:///./data/small_talk.db
 STORAGE_BACKEND=local            # local | minio
 AUDIO_DIR=./data/audio
 MINIO_ENDPOINT= MINIO_ACCESS_KEY= MINIO_SECRET_KEY= MINIO_BUCKET=voices
@@ -369,7 +369,7 @@ RETENTION_DAYS=365
 ---
 
 ## 15. README must include (judges score this)
-- One-line problem statement: *"Because of Shamba Call, a smallholder coffee farmer will know within minutes whether her coffee is sick and what to do, which she would otherwise learn months late or never; we know because [evidence: FAOSTAT yield trend, extension-officer coverage, GSMA basic-phone ownership]."*
+- One-line problem statement: *"Because of Small Talk, a smallholder coffee farmer will know within minutes whether her coffee is sick and what to do, which she would otherwise learn months late or never; we know because [evidence: FAOSTAT yield trend, extension-officer coverage, GSMA basic-phone ownership]."*
 - Why AI and not a plain SMS menu: free speech in local languages becomes structured symptoms, which a keypad or spreadsheet can't do.
 - Guardrails: fixed answers, not-sure fallback, human review, and verified-only learning.
 - Data sources with licenses: FLEURS, Common Voice, seed profiles (CABI / extension guides), and the synthetic test sets (labeled as synthetic).

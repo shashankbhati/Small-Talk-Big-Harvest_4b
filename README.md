@@ -1,8 +1,8 @@
-# Shamba Call
+# Small Talk
 
 **A smallholder coffee farmer calls or texts from a basic phone, describes her coffee problem in her own language, and gets back a safe, human-written answer within minutes.**
 
-> Because of Shamba Call, a smallholder coffee farmer will know within minutes whether her coffee is sick and what to do, which she would otherwise learn months late or never. We know because coffee yields in East Africa have stagnated for decades (FAOSTAT), there is roughly one public extension officer per 1,000+ farm households in Kenya, and most rural farmers own a basic phone rather than a smartphone (GSMA). *(TODO team: add exact figures and links.)*
+> Because of Small Talk, a smallholder coffee farmer will know within minutes whether her coffee is sick and what to do, which she would otherwise learn months late or never. We know because coffee yields in East Africa have stagnated for decades (FAOSTAT), there is roughly one public extension officer per 1,000+ farm households in Kenya, and most rural farmers own a basic phone rather than a smartphone (GSMA). *(TODO team: add exact figures and links.)*
 
 Hack-Nation × World Bank "Small AI for Development", Challenge 04, **Agriculture** track.
 
@@ -103,7 +103,7 @@ uvicorn app.main:app --port 8000
 2. In the Twilio console: Voice webhook `POST {PUBLIC_BASE_URL}/voice/incoming`, Messaging webhook `POST {PUBLIC_BASE_URL}/sms/incoming`.
 3. Set `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN`. Keep `TWILIO_VALIDATE=true` (every webhook's signature is checked).
 
-**Call flow:** welcome in all languages (1 Swahili · 2 Arabic · 3 Hindi · 9 delete my data) → consent (1 keep voice · 2 this answer only) → beep, describe (up to 30 s) → "please wait" while processing runs in the background (the call checks every 3 s, up to ~75 s) → answer → goodbye.
+**Call flow:** welcome (3 Hindi · 9 delete my data) → beep right after the key press, describe (up to 30 s; audio is used for this answer only, then deleted) → "please wait" while processing runs in the background (the call checks every 3 s, up to ~5 min, `VOICE_MAX_TRIES`) → answer → goodbye.
 
 **SMS:** language from the prefix (`SW`, `AR`, `HI`) or from the script (Arabic → ar, Devanagari → hi, otherwise sw). The first reply includes a one-line privacy notice.
 
