@@ -13,6 +13,7 @@ Hack-Nation × World Bank "Small AI for Development", Challenge 04, **Agricultur
 | Where | What |
 |---|---|
 | [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md) | Technical walkthrough for judges: workflow diagram, where AI is and is not used, evidence, limits |
+| [`docs/demo/small_talk_big_harvest.mp4`](docs/demo/small_talk_big_harvest.mp4) | Demo video of Small Talk, Big Harvest |
 | `main` (this branch) | Helpline backend: voice line, speech-to-text, symptom extraction, matcher, officer review, registration API |
 | [`ui` branch](../../tree/ui) | Registration app for the family smartphone, live at https://small-talk-big-harvest.vercel.app |
 | [`prototype-v1` branch](../../tree/prototype-v1) | The first prototype from the start of the weekend, replaced by this code |
